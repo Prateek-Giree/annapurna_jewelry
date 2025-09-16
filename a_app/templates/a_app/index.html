@@ -1,11 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Hello, World!</h1>
-</body>
-</html>
+{% extends "base.html" %} {% block title %} Annapurna Jewelry
+{% endblock title %} {% block body %} {% load static %}
+
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-white overflow-x-hidden"
+  style="font-family: 'Plus Jakarta Sans', 'Noto Sans', sans-serif">
+  <div class="relative flex w-full flex-col items-center bg-[#f7f7f7]">
+    <div class="relative w-full">
+      <div class="relative flex w-full flex-col items-center bg-[#f7f7f7]">
+        <div class="relative w-full overflow-hidden h-[500px]" id="carousel">
+
+          <div class="absolute inset-0 opacity-0 transition-opacity duration-1000">
+            <img src="{% static 'assets/image8.png' %}" alt="Slide 5" class="h-full w-full object-cover" />
+            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center text-center px-4">
+              <a href="#"
+                class="mt-6 rounded-full bg-orange-500 px-4 py-4 text-white text-lg font-semibold transition-all duration-300 hover:bg-orange-600 hover:-translate-y-2">
+                Shop Now
+              </a>
+
+            </div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="absolute inset-0 opacity-0 transition-opacity duration-1000">
+            <img src="{% static 'assets/b.jpg' %}" alt="Slide 2" class="h-full w-full object-cover" />
+            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center text-center px-4">
+              <a href="#"
+                class="mt-6 rounded-full bg-orange-500 px-4 py-4 text-white text-lg font-semibold transition-all duration-300 hover:bg-orange-600 hover:-translate-y-2">
+                Shop Now
+              </a>
+
+            </div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="absolute inset-0 opacity-0 transition-opacity duration-1000">
+            <img src="{% static 'assets/b2.jpg' %}" alt="Slide 3" class="h-full w-full object-cover" />
+            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center text-center px-4">
+              <a href="#"
+                class="mt-6 rounded-full bg-orange-500 px-4 py-4 text-white text-lg font-semibold transition-all duration-300 hover:bg-orange-600 hover:-translate-y-2">
+                Shop Now
+              </a>
+
+            </div>
+          </div>
+
+          <!-- Slide 4 -->
+          <div class="absolute inset-0 opacity-0 transition-opacity duration-1000">
+            <img src="{% static 'assets/b3.jpg' %}" alt="Slide 4" class="h-full w-full object-cover" />
+            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center text-center px-4">
+              <a href="#"
+                class="mt-6 rounded-full bg-orange-500 px-4 py-4 text-white text-lg font-semibold transition-all duration-300 hover:bg-orange-600 hover:-translate-y-2">
+                Shop Now
+              </a>
+
+            </div>
+          </div>
+
+          <!-- Slide 5 -->
+          <div class="absolute inset-0 opacity-0 transition-opacity duration-1000">
+            <img src="{% static 'assets/b7.jpg' %}" alt="Slide 5" class="h-full w-full object-cover" />
+            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center text-center px-4">
+              <a href="#"
+                class="mt-6 rounded-full bg-orange-500 px-4 py-4 text-white text-lg font-semibold transition-all duration-300 hover:bg-orange-600 hover:-translate-y-2">
+                Shop Now
+              </a>
+
+            </div>
+          </div>
+
+          <!-- Prev/Next buttons -->
+          <!-- <button
+          class="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 text-gray-700 shadow-lg hover:bg-white"
+          onclick="prevSlide()">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+        <button
+          class="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 text-gray-700 shadow-lg hover:bg-white"
+          onclick="nextSlide()">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button> -->
+        </div>
+
+        <script>
+          const slides = document.querySelectorAll("#carousel > div");
+          let current = 0;
+
+          function showSlide(index) {
+            slides.forEach((slide, i) => {
+              // Hide all slides
+              slide.classList.remove("opacity-100", "slide-active", "pointer-events-auto");
+              slide.classList.add("opacity-0", "pointer-events-none");
+
+              // Show the active one
+              if (i === index) {
+                slide.classList.remove("opacity-0", "pointer-events-none");
+                slide.classList.add("opacity-100", "slide-active", "pointer-events-auto");
+              }
+            });
+          }
+
+          function nextSlide() {
+            current = (current + 1) % slides.length;
+            showSlide(current);
+          }
+
+          function prevSlide() {
+            current = (current - 1 + slides.length) % slides.length;
+            showSlide(current);
+          }
+
+          // Auto fade every 3s
+          setInterval(nextSlide, 3000);
+
+          // Initialize
+          showSlide(current);
+        </script>
+      </div>
+    </div>
+  </div>
+  {% endblock body %}

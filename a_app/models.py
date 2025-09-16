@@ -14,6 +14,26 @@ class Category(models.Model):
 from django.db import models
 
 
+# DeliveryAddress Table
+class DeliveryAddress(models.Model):
+    location = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.location
+
+
+# UserProfile Table
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_image = models.ImageField(upload_to="profiles/", blank=True, null=True)
+    phone = models.CharField(max_length=15, blank=True)
+    address = models.TextField(blank=True)
+    delivery_address = models.ForeignKey(DeliveryAddress, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.user.username
+
+
 # Product Table
 class Product(models.Model):
     name = models.CharField(max_length=200)
