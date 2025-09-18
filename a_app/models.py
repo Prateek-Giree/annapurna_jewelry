@@ -51,6 +51,14 @@ class Product(models.Model):
     ], default="other")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
 
+    @property
+    def discount_percentage(self):
+        """Return discount percentage if discount_price exists"""
+        if self.discount_price and self.price > 0:
+            discount = ((self.discount_price) / self.price) * 100
+            return round(discount) 
+        return None
+    
     def __str__(self):
         return self.name
 

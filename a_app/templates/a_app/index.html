@@ -1,120 +1,274 @@
 {% extends "base.html" %} {% block title %} Annapurna Jewelry
 {% endblock title %} {% block body %} {% load static %}
 
-<div class="relative flex h-auto min-h-screen w-full flex-col bg-white overflow-x-hidden"
+<section class="relative flex h-auto w-full flex-col bg-white overflow-x-hidden"
   style="font-family: 'Plus Jakarta Sans', 'Noto Sans', sans-serif">
-  <div class="relative flex w-full flex-col items-center bg-[#f7f7f7]">
-    <div class="relative w-full">
-      <div class="relative flex w-full flex-col items-center bg-[#f7f7f7]">
-        <div class="relative w-full overflow-hidden h-[500px]" id="carousel">
-
-          <div class="absolute inset-0 opacity-0 transition-opacity duration-1000">
-            <img src="{% static 'assets/image8.png' %}" alt="Slide 5" class="h-full w-full object-cover" />
-            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center text-center px-4">
-              <a href="#"
-                class="mt-6 rounded-full bg-orange-500 px-4 py-4 text-white text-lg font-semibold transition-all duration-300 hover:bg-orange-600 hover:-translate-y-2">
-                Shop Now
-              </a>
-
-            </div>
-          </div>
-
-          <!-- Slide 2 -->
-          <div class="absolute inset-0 opacity-0 transition-opacity duration-1000">
-            <img src="{% static 'assets/b.jpg' %}" alt="Slide 2" class="h-full w-full object-cover" />
-            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center text-center px-4">
-              <a href="#"
-                class="mt-6 rounded-full bg-orange-500 px-4 py-4 text-white text-lg font-semibold transition-all duration-300 hover:bg-orange-600 hover:-translate-y-2">
-                Shop Now
-              </a>
-
-            </div>
-          </div>
-
-          <!-- Slide 3 -->
-          <div class="absolute inset-0 opacity-0 transition-opacity duration-1000">
-            <img src="{% static 'assets/b2.jpg' %}" alt="Slide 3" class="h-full w-full object-cover" />
-            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center text-center px-4">
-              <a href="#"
-                class="mt-6 rounded-full bg-orange-500 px-4 py-4 text-white text-lg font-semibold transition-all duration-300 hover:bg-orange-600 hover:-translate-y-2">
-                Shop Now
-              </a>
-
-            </div>
-          </div>
-
-          <!-- Slide 4 -->
-          <div class="absolute inset-0 opacity-0 transition-opacity duration-1000">
-            <img src="{% static 'assets/b3.jpg' %}" alt="Slide 4" class="h-full w-full object-cover" />
-            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center text-center px-4">
-              <a href="#"
-                class="mt-6 rounded-full bg-orange-500 px-4 py-4 text-white text-lg font-semibold transition-all duration-300 hover:bg-orange-600 hover:-translate-y-2">
-                Shop Now
-              </a>
-
-            </div>
-          </div>
-
-          <!-- Slide 5 -->
-          <div class="absolute inset-0 opacity-0 transition-opacity duration-1000">
-            <img src="{% static 'assets/b7.jpg' %}" alt="Slide 5" class="h-full w-full object-cover" />
-            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center text-center px-4">
-              <a href="#"
-                class="mt-6 rounded-full bg-orange-500 px-4 py-4 text-white text-lg font-semibold transition-all duration-300 hover:bg-orange-600 hover:-translate-y-2">
-                Shop Now
-              </a>
-
-            </div>
-          </div>
-
-          <!-- Prev/Next buttons -->
-          <!-- <button
-          class="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 text-gray-700 shadow-lg hover:bg-white"
-          onclick="prevSlide()">
-          <span class="material-symbols-outlined">chevron_left</span>
-        </button>
-        <button
-          class="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 text-gray-700 shadow-lg hover:bg-white"
-          onclick="nextSlide()">
-          <span class="material-symbols-outlined">chevron_right</span>
-        </button> -->
+  <!-- Carousel Section -->
+  <div class="relative w-full bg-[#f7f7f7]">
+    <div class="relative w-full h-[600px] overflow-hidden" id="carousel">
+      <!-- Slide 1 -->
+      <div class="absolute inset-0 opacity-0 transition-opacity duration-1000">
+        <img src="{% static 'assets/image8.png' %}" alt="Slide 1" class="h-full w-full object-cover" />
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center text-center px-4">
+          <a href="#"
+            class="mt-6 rounded-full bg-orange-500 px-4 py-4 text-white text-lg font-semibold transition-all duration-300 hover:bg-orange-600 hover:-translate-y-2">
+            Shop Now
+          </a>
         </div>
+      </div>
 
-        <script>
-          const slides = document.querySelectorAll("#carousel > div");
-          let current = 0;
+      <!-- Slide 2 -->
+      <div class="absolute inset-0 opacity-0 transition-opacity duration-1000">
+        <img src="{% static 'assets/b.jpg' %}" alt="Slide 2" class="h-full w-full object-cover" />
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center text-center px-4">
+          <a href="#"
+            class="mt-6 rounded-full bg-orange-500 px-4 py-4 text-white text-lg font-semibold transition-all duration-300 hover:bg-orange-600 hover:-translate-y-2">
+            Shop Now
+          </a>
+        </div>
+      </div>
 
-          function showSlide(index) {
-            slides.forEach((slide, i) => {
-              // Hide all slides
-              slide.classList.remove("opacity-100", "slide-active", "pointer-events-auto");
-              slide.classList.add("opacity-0", "pointer-events-none");
+      <!-- Slide 3 -->
+      <div class="absolute inset-0 opacity-0 transition-opacity duration-1000">
+        <img src="{% static 'assets/b2.jpg' %}" alt="Slide 3" class="h-full w-full object-cover" />
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center text-center px-4">
+          <a href="#"
+            class="mt-6 rounded-full bg-orange-500 px-4 py-4 text-white text-lg font-semibold transition-all duration-300 hover:bg-orange-600 hover:-translate-y-2">
+            Shop Now
+          </a>
+        </div>
+      </div>
 
-              // Show the active one
-              if (i === index) {
-                slide.classList.remove("opacity-0", "pointer-events-none");
-                slide.classList.add("opacity-100", "slide-active", "pointer-events-auto");
-              }
-            });
-          }
+      <!-- Slide 4 -->
+      <div class="absolute inset-0 opacity-0 transition-opacity duration-1000">
+        <img src="{% static 'assets/b3.jpg' %}" alt="Slide 4" class="h-full w-full object-cover" />
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center text-center px-4">
+          <a href="#"
+            class="mt-6 rounded-full bg-orange-500 px-4 py-4 text-white text-lg font-semibold transition-all duration-300 hover:bg-orange-600 hover:-translate-y-2">
+            Shop Now
+          </a>
+        </div>
+      </div>
 
-          function nextSlide() {
-            current = (current + 1) % slides.length;
-            showSlide(current);
-          }
-
-          function prevSlide() {
-            current = (current - 1 + slides.length) % slides.length;
-            showSlide(current);
-          }
-
-          // Auto fade every 3s
-          setInterval(nextSlide, 3000);
-
-          // Initialize
-          showSlide(current);
-        </script>
+      <!-- Slide 5 -->
+      <div class="absolute inset-0 opacity-0 transition-opacity duration-1000">
+        <img src="{% static 'assets/b7.jpg' %}" alt="Slide 5" class="h-full w-full object-cover" />
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center text-center px-4">
+          <a href="#"
+            class="mt-6 rounded-full bg-orange-500 px-4 py-4 text-white text-lg font-semibold transition-all duration-300 hover:bg-orange-600 hover:-translate-y-2">
+            Shop Now
+          </a>
+        </div>
       </div>
     </div>
   </div>
-  {% endblock body %}
+</section>
+
+<!-- Features Section -->
+<section class="containers mx-auto px-6 py-16">
+  <h1
+    class="text-center font-['Cormorant_Garamond',serif] font-bold italic text-5xl text-gray-800 relative mx-auto mb-16 after:content-[''] after:block after:w-16 after:h-[3px] after:bg-[#054857] after:mx-auto after:mt-2">
+    Our Specialty
+  </h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+    <div class="flex font-['Cormorant_Garamond',serif] flex-col items-center">
+      <div class="mb-6 w-32 h-32 flex items-center justify-center">
+        <img alt="Gem icon" class="w-22 h-22" src="{% static 'assets/Group 14.svg' %}" />
+      </div>
+      <h2 class="text-2xl font-bold text-3xl text-gray-800 mb-4">
+        Gems and Natural Stones
+      </h2>
+      <div class="w-12 h-px bg-gray-300 mx-auto mb-4"></div>
+      <p class="text-2xl leading-relaxed">
+        We use precious and semi-precious stones: diamonds, emeralds, sapphires,
+        etc. and also work with Swarovski crystals.
+      </p>
+    </div>
+
+    <div class="flex font-['Cormorant_Garamond',serif] flex-col items-center">
+      <div class="mb-6 w-32 h-32 flex items-center justify-center">
+        <img alt="Gold icon" class="w-22 h-22" src="{% static 'assets/Group 18.svg' %}" />
+      </div>
+      <h2 class="text-2xl font-bold text-gray-800 text-3xl mb-4">Gold</h2>
+      <div class="w-12 h-px bg-gray-300 mx-auto mb-4"></div>
+      <p class="text-2xl leading-relaxed">
+        Our fine jewelry will never darken or wear off. With proper care, you
+        can wear it for 50+ years and pass it to your heirs!
+      </p>
+    </div>
+
+    <div class="flex font-['Cormorant_Garamond',serif] flex-col items-center">
+      <div class="mb-6 w-32 h-32 flex items-center justify-center">
+        <img alt="Designer icon" class="w-22 h-22" src="{% static 'assets/Group 19.svg' %}" />
+      </div>
+      <h2 class="text-2xl font-bold text-gray-800 text-3xl mb-4">
+        Designer Collections
+      </h2>
+      <div class="w-12 h-px bg-gray-300 mx-auto mb-4"></div>
+      <p class="text-2xl leading-relaxed">
+        We create exquisite fine jewelry. Each collection has a soul and a
+        certain message that resonates in the hearts of our customers.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Trending Products Section  -->
+<section class="containers mx-auto px-6 py-16">
+  <div class="flex flex-col items-center text-center font-['Cormorant_Garamond',serif]">
+    <p class="font-sans font-bold text-[14px] mb-6 text-[#ffc7a7]">TRENDING</p>
+
+    <h1
+      class="font-bold italic text-5xl text-gray-800 relative mb-5 after:content-[''] after:block after:w-16 after:h-[2px] after:bg-[#054857] after:mx-auto after:mt-2">
+      Best-Selling Items
+    </h1>
+    <p class="max-w-xl text-[22px] text-gray">
+      In this section, you will find fine jewelry chosen by hundreds of our
+      customers. Best price guaranteed.
+    </p>
+  </div>
+
+<div class=" px-5 py-10">
+  <div class="grid justify-center grid-cols-[repeat(auto-fit,minmax(250px,280px))] gap-6 mt-5">
+
+    {% for product in products %}
+    <div
+      class="group w-[280px] bg-white border border-[#f0f0f0] rounded-lg overflow-hidden transition-all duration-300 relative hover:border-[#e0e0e0] hover:-translate-y-[2px] hover:shadow-[0_4px_20px_rgba(0,0,0,0.5)] shadow-md">
+
+      <!-- Wishlist Button -->
+      <button onclick="toggleWishlist(this, {{ product.id }})"
+        class="absolute z-10 top-[15px] right-[15px] w-10 h-10 rounded-full bg-white/90 flex items-center justify-center opacity-0 transition-all duration-200 hover:bg-white hover:scale-110 group-hover:opacity-100 group-[.active]:bg-red-500 group-[.active]:text-white">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-[18px] h-[18px]">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+      </button>
+
+      {% if product.discount_price %}
+      <small
+        class="absolute z-10 bg-[rgb(252,43,78)] text-white font-bold font-sans p-[5px] border-l-[5px] border-[rgb(252,43,78)] rounded">
+          -{{ product.discount_percentage }}%
+      </small>
+      {% endif %}
+
+      <img src="{{ product.image.url }}" alt="{{ product.name }}"
+        class="w-full h-[250px] object-cover transition-transform duration-300 hover:scale-105" />
+
+      <div class="p-5">
+        <div class="text-[12px] uppercase tracking-wider text-gray-500 font-medium mb-2">
+          {{ product.category.name }}
+        </div>
+
+        <div class="text-[18px] font-semibold mb-3 text-gray-800">
+          {{ product.name }}
+        </div>
+
+        <div class="flex items-center gap-3 mb-5">
+          {% if product.new_price %}
+          <span class="text-gray-400 line-through text-[16px]">Rs.{{ product.price }}</span>
+          <span class="text-[20px] font-bold text-black">Rs.{{ product.new_price }}</span>
+          {% else %}
+          <span class="text-[20px] font-bold text-black">Rs.{{ product.price }}</span>
+          {% endif %}
+        </div>
+
+        <!-- Add to Cart -->
+        <div class="flex gap-3">
+          <button onclick="addToCart({{ product.id }})"
+            class="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-md text-sm font-medium text-white bg-black transition-all duration-200 hover:bg-gray-800 hover:-translate-y-[1px]">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-[16px] h-[16px]">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l5.5 11" />
+            </svg>
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+
+</section>
+
+<!-- Collection Section  -->
+<section>
+  <div class="container mx-auto px-4 py-16 font-['Cormorant_Garamond',serif]">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div class="pr-0 md:pr-12">
+        <p class="font-sans font-bold text-[14px] mb-6 text-[#ffc7a7]">
+          COLLECTION
+        </p>
+
+        <h1 class="font-display text-[32px] md:text-7xl font-bold mt-4 text-text-light dark:text-text-dark">
+          Our Youth Collection on Sale Now.
+        </h1>
+        </p>
+        <p class="mt-6 text-[22px]">
+          This collection was created while thinking about youth and purity.
+          Trendy gold chains in bracelets and necklaces look very delicate. The
+          entire collection is very light, airy, and is a great fit for any
+          occasion.
+        </p>
+        <a href="#"
+          class="mt-8 inline-flex bg-black text-white py-3 px-6 text-sm font-semibold flex items-center space-x-2 rounded-md transition-all duration-200 hover:bg-gray-800 hover:scale-105">
+          <span>—</span>
+          <span>Discover the collection</span>
+        </a>
+      </div>
+      <div class="relative">
+        <div
+          class="absolute inset-0 bg-gray-200 dark:bg-gray-700 transform -translate-x-4 translate-y-4 md:-translate-x-8 md:translate-y-8 z-0">
+        </div>
+        <img alt="Hands with delicate gold rings and a bracelet" class="relative z-10 w-full h-auto object-cover"
+          src="{% static 'assets/collectionimg.png' %}" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Category Section -->
+
+<section>
+  <div class="container mx-auto px-4 py-16">
+<header class="text-center mb-12 font-['Cormorant_Garamond',serif]">
+  <h1 class="text-5xl font-bold">
+    Choose Your Favorites
+  </h1>
+  <p class="text-lg text-gray-600 dark:text-gray mt-4">
+    Choose the fine jewelry that you will shine in tomorrow.
+  </p>
+</header>
+
+
+    <div class="relative">
+      <div class="flex overflow-x-auto space-x-8 pb-4 scrollbar-hide">
+
+        <!-- Necklace Card -->
+        {% for category in categories %}
+        <div class="flex-shrink-0 w-80 relative group hover:-translate-y-[20px] hover:shadow-lg transition-all duration-300">
+          <!-- Category Image -->
+          <img class="w-full h-auto object-cover rounded-lg" src="{{ category.image.url }}" alt="{{ category.name }}" />
+
+          <!-- Overlay Title -->
+          <div
+            class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center rounded-lg transition-opacity duration-300 group-hover:opacity-0">
+            <h2 class="text-white text-4xl font-display">{{ category.name }}</h2>
+          </div>
+
+          <!-- Details Button -->
+          <a href=""
+            class="absolute bottom-5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-white text-gray-800 py-2 px-6 rounded-full font-semibold shadow-md transition-opacity duration-300">
+            Details
+          </a>
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock body %}
