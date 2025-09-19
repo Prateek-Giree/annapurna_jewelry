@@ -129,67 +129,71 @@
     </p>
   </div>
 
-<div class=" px-5 py-10">
-  <div class="grid justify-center grid-cols-[repeat(auto-fit,minmax(250px,280px))] gap-6 mt-5">
+  <div class=" px-5 py-10">
+    <div class="grid justify-center grid-cols-[repeat(auto-fit,minmax(250px,280px))] gap-6 mt-5">
 
-    {% for product in products %}
-    <div
-      class="group w-[280px] bg-white border border-[#f0f0f0] rounded-lg overflow-hidden transition-all duration-300 relative hover:border-[#e0e0e0] hover:-translate-y-[2px] hover:shadow-[0_4px_20px_rgba(0,0,0,0.5)] shadow-md">
+      {% for product in products %}
+      <div
+        class="group w-[280px] bg-white border border-[#f0f0f0] rounded-lg overflow-hidden transition-all duration-300 relative hover:border-[#e0e0e0] hover:-translate-y-[2px] hover:shadow-[0_4px_20px_rgba(0,0,0,0.5)] shadow-md">
 
-      <!-- Wishlist Button -->
-      <button onclick="toggleWishlist(this, {{ product.id }})"
-        class="absolute z-10 top-[15px] right-[15px] w-10 h-10 rounded-full bg-white/90 flex items-center justify-center opacity-0 transition-all duration-200 hover:bg-white hover:scale-110 group-hover:opacity-100 group-[.active]:bg-red-500 group-[.active]:text-white">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-[18px] h-[18px]">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-        </svg>
-      </button>
+        <!-- Wishlist Button -->
+        <button onclick="toggleWishlist(this, {{ product.id }})"
+          class="absolute z-10 top-[15px] right-[15px] w-10 h-10 rounded-full bg-white/90 flex items-center justify-center opacity-0 transition-all duration-200 hover:bg-white hover:scale-110 group-hover:opacity-100 group-[.active]:bg-red-500 group-[.active]:text-white">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-[18px] h-[18px]">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+        </button>
 
-      {% if product.discount_price %}
-      <small
-        class="absolute z-10 bg-[rgb(252,43,78)] text-white font-bold font-sans p-[5px] border-l-[5px] border-[rgb(252,43,78)] rounded">
+        {% if product.discount_price %}
+        <small
+          class="absolute z-10 bg-[rgb(252,43,78)] text-white font-bold font-sans p-[5px] border-l-[5px] border-[rgb(252,43,78)] rounded">
           -{{ product.discount_percentage }}%
-      </small>
-      {% endif %}
+        </small>
+        {% endif %}
 
-      <img src="{{ product.image.url }}" alt="{{ product.name }}"
-        class="w-full h-[250px] object-cover transition-transform duration-300 hover:scale-105" />
+        <img src="{{ product.image.url }}" alt="{{ product.name }}"
+          class="w-full h-[250px] object-cover transition-transform duration-300 hover:scale-105" />
 
-      <div class="p-5">
-        <div class="text-[12px] uppercase tracking-wider text-gray-500 font-medium mb-2">
-          {{ product.category.name }}
-        </div>
+        <div class="p-5">
+          <div class="text-[12px] uppercase tracking-wider text-gray-500 font-medium mb-2">
+            {{ product.category.name }}
+          </div>
 
-        <div class="text-[18px] font-semibold mb-3 text-gray-800">
-          {{ product.name }}
-        </div>
+          <div class="text-[18px] font-semibold mb-3 text-gray-800">
+            {{ product.name }}
+          </div>
 
-        <div class="flex items-center gap-3 mb-5">
-          {% if product.new_price %}
-          <span class="text-gray-400 line-through text-[16px]">Rs.{{ product.price }}</span>
-          <span class="text-[20px] font-bold text-black">Rs.{{ product.new_price }}</span>
-          {% else %}
-          <span class="text-[20px] font-bold text-black">Rs.{{ product.price }}</span>
-          {% endif %}
-        </div>
+          <div class="flex items-center gap-3 mb-5">
+            {% if product.discount_price %}
+            <span class="text-gray-400 line-through text-[16px]">Rs.{{ product.price }}</span>
+            <span class="text-[20px] font-bold text-black">
+              Rs.{{ product.before_discount }}
+            </span>
+            {% else %}
+            <span class="text-[20px] font-bold text-black">Rs.{{ product.price }}</span>
+            {% endif %}
+          </div>
 
-        <!-- Add to Cart -->
-        <div class="flex gap-3">
-          <button onclick="addToCart({{ product.id }})"
-            class="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-md text-sm font-medium text-white bg-black transition-all duration-200 hover:bg-gray-800 hover:-translate-y-[1px]">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-[16px] h-[16px]">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l5.5 11" />
-            </svg>
-            Add to Cart
-          </button>
+
+
+          <!-- Add to Cart -->
+          <div class="flex gap-3">
+            <button onclick="addToCart({{ product.id }})"
+              class="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-md text-sm font-medium text-white bg-black transition-all duration-200 hover:bg-gray-800 hover:-translate-y-[1px]">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-[16px] h-[16px]">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l5.5 11" />
+              </svg>
+              Add to Cart
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-    {% endfor %}
+      {% endfor %}
 
+    </div>
   </div>
-</div>
 
 </section>
 
@@ -233,14 +237,14 @@
 
 <section>
   <div class="container mx-auto px-4 py-16">
-<header class="text-center mb-12 font-['Cormorant_Garamond',serif]">
-  <h1 class="text-5xl font-bold">
-    Choose Your Favorites
-  </h1>
-  <p class="text-lg text-gray-600 dark:text-gray mt-4">
-    Choose the fine jewelry that you will shine in tomorrow.
-  </p>
-</header>
+    <header class="text-center mb-12 font-['Cormorant_Garamond',serif]">
+      <h1 class="text-5xl font-bold">
+        Choose Your Favorites
+      </h1>
+      <p class="text-lg text-gray-600 dark:text-gray mt-4">
+        Choose the fine jewelry that you will shine in tomorrow.
+      </p>
+    </header>
 
 
     <div class="relative">
@@ -248,7 +252,8 @@
 
         <!-- Necklace Card -->
         {% for category in categories %}
-        <div class="flex-shrink-0 w-80 relative group hover:-translate-y-[20px] hover:shadow-lg transition-all duration-300">
+        <div
+          class="flex-shrink-0 w-80 relative group hover:-translate-y-[20px] hover:shadow-lg transition-all duration-300">
           <!-- Category Image -->
           <img class="w-full h-auto object-cover rounded-lg" src="{{ category.image.url }}" alt="{{ category.name }}" />
 

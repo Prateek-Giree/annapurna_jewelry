@@ -132,6 +132,13 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+LOGIN_REDIRECT_URL = 'index' 
+LOGOUT_REDIRECT_URL = '/login/'
+
+AUTHENTICATION_BACKENDS = [
+    'a_app.auth_backends.EmailAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

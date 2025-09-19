@@ -59,6 +59,13 @@ class Product(models.Model):
             return round(discount) 
         return None
     
+    @property
+    def before_discount(self):
+        if self.discount_price:
+            return self.price + self.discount_price
+        return self.price
+
+    
     def __str__(self):
         return self.name
 

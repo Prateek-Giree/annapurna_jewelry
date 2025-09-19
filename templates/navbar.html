@@ -52,17 +52,26 @@
                         placeholder="Search products..." type="search" />
                 </div>
             </div>
-            <div class="flex items-center gap-x-4">
+            <div class="flex items-center gap-x-6">
                 <a class="relative text-gray-600 hover:text-gray-900 transition-colors" href="#">
                     <span class="material-symbols-outlined"> shopping_cart </span>
                     <span
                         class="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">5</span>
                 </a>
-                <div class="hidden md:flex items-center gap-x-2">
-                    <a class="rounded-md px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"
-                        href="#">Login</a>
+                {% if user.is_authenticated %}
+                <div class="hidden md:flex items-center gap-x-4">
+                    <span class="text-gray-600 flex items-center gap-1">
+                        <i class="fa-solid fa-circle-user"></i><a href class="text-gray-600">{{ user.username }}</a></span>
                     <a class="rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 transition-colors"
-                        href="#">Register</a>
+                        href="{% url 'logout' %}">Logout</a>
+                    {% else %}
+                    <div class="hidden md:flex items-center gap-x-2">
+                        <a class="rounded-md px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"
+                            href="{% url "login" %}">Login</a>
+                        <a class="rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 transition-colors"
+                            href="#">Register</a>
+                    </div>
+                    {% endif %}
                 </div>
                 <button class="md:hidden text-gray-600 hover:text-gray-900">
                     <span class="material-symbols-outlined"> menu </span>

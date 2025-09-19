@@ -34,8 +34,23 @@
     {% block body %}
 
     {% endblock body %}
-  <script src="{% static 'js/script.js' %}"></script>
   </div>
+  <script src="{% static 'js/script.js' %}"></script>
+  
+  {% if messages %}
+  <script>
+    {% for message in messages %}
+    Swal.fire({
+      icon: "{{ message.tags }}",
+      title: "{{ message }}",
+      showConfirmButton: true,
+      timer: 3000,
+    });
+    {% endfor %}
+  </script>
+  {% endif %}
+
+
 </body>
 
 </html>
