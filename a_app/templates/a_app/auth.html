@@ -1,118 +1,205 @@
 {% extends "base.html" %} {% block title %}Login{% endblock title %} 
 {% block body %} {% if user.is_authenticated %}
 <script>
-  window.location.href = "{% url 'index' %}";
+    window.location.href = "{% url 'index' %}";
 </script>
 {% endif %} {% if page == 'login' %}
 <div class="flex min-h-screen">
-  <div class="w-1/2 relative hidden lg:block">
-    <img
-      alt="Elegant jewelry on a dark background"
-      class="absolute inset-0 w-full h-full object-cover"
-      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNDJY4OCyzFWm2hgmRua4Syji9sx_-4geFeVA5Op18KEgI1wgvN5SDxDF78YMy2UFQhsZGErVzoeqFDlco4XtqpvZRRqNrvF6Yb9h7w79kTuj6PB3ueYzCxxDzMwu3foCrdoGl2wQqV4744QU1jLIsRmvWwI6ARm4REdyP3sCfj4R7tjqABNIwPRJQKD0rvyI1qhlAZvCES4qKeCpP7mTyyA8ppb2bnjiASJo6wI6ZC8u7wXsJKI5hB3cQcGUZ89kMbxCzwQfssuMX"
-    />
-    <div
-      class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-end p-20 text-white font-['Cormorant_Garamond',serif]"
-    >
-      <h1 class="font-display text-6xl font-bold mb-4">
-        Find your perfect sparkle
-      </h1>
-      <p class="text-xl">Discover exquisite pieces for every occasion.</p>
+    <div class="w-1/2 relative hidden lg:block">
+        <img alt="Elegant jewelry on a dark background" class="absolute inset-0 w-full h-full object-cover"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNDJY4OCyzFWm2hgmRua4Syji9sx_-4geFeVA5Op18KEgI1wgvN5SDxDF78YMy2UFQhsZGErVzoeqFDlco4XtqpvZRRqNrvF6Yb9h7w79kTuj6PB3ueYzCxxDzMwu3foCrdoGl2wQqV4744QU1jLIsRmvWwI6ARm4REdyP3sCfj4R7tjqABNIwPRJQKD0rvyI1qhlAZvCES4qKeCpP7mTyyA8ppb2bnjiASJo6wI6ZC8u7wXsJKI5hB3cQcGUZ89kMbxCzwQfssuMX" />
+        <div
+            class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-end p-20 text-white font-['Cormorant_Garamond',serif]">
+            <h1 class="font-display text-6xl font-bold mb-4">
+                Find your perfect sparkle
+            </h1>
+            <p class="text-xl">Discover exquisite pieces for every occasion.</p>
+        </div>
     </div>
-  </div>
-  <div class="w-full lg:w-1/2 flex items-center justify-center p-8 lg:p-12">
-    <div class="max-w-md w-full">
-      <h2 class="font-display text-4xl font-bold text-gray-900">
-        Welcome Back
-      </h2>
-      <p class="mt-2 text-gray-600">Sign in to your account</p>
-      <form method="POST" action="{% url 'login' %}" class="mt-8 space-y-6">
-        {% csrf_token %}
-        <div>
-          <label class="block text-sm font-medium text-gray-700" for="email"
-            >Your Email</label
-          >
-          <div class="mt-1">
-            <input
-              autocomplete="email"
-              class="w-full px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary text-gray-900"
-              id="email"
-              name="email"
-              placeholder="your.email@example.com"
-              required
-              type="email"
-            />
-          </div>
+    <div class="w-full lg:w-1/2 flex items-center justify-center p-8 lg:p-12">
+        <div class="max-w-md w-full">
+            <h2 class="font-display text-4xl font-bold text-gray-900">
+                Welcome Back
+            </h2>
+            <p class="mt-2 text-gray-600">Sign in to your account</p>
+            <form method="POST" action="{% url 'login' %}" class="mt-8 space-y-6">
+                {% csrf_token %}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700" for="email">Your Email</label>
+                    <div class="mt-1">
+                        <input autocomplete="email"
+                            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary text-gray-900"
+                            id="email" name="email" placeholder="your.email@example.com" required type="email" />
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700" for="password">Password</label>
+                    <div class="mt-1 relative">
+                        <input autocomplete="current-password"
+                            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary text-gray-900"
+                            id="password" name="password" placeholder="••••••••" required type="password" />
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="text-sm">
+                        <a class="font-medium text-primary hover:text-primary/80" href="#">Forgot Password?</a>
+                    </div>
+                </div>
+                <div>
+                    <button
+                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black transition-all duration-200 hover:-translate-y-[4px] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        type="submit">
+                        Login
+                    </button>
+                </div>
+            </form>
+            <div class="mt-6">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-white text-gray-500">Instant Login</span>
+                    </div>
+                </div>
+                <div class="mt-6 grid grid-cols-1 gap-3">
+                    <div>
+                        <a class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+                            href="#">
+                            <i class="fa-brands fa-google text-lg"></i>
+                            <span>Continue with Google</span>
+                        </a>
+                    </div>
+                    <div>
+                        <a class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+                            href="#">
+                            <i class="fa-brands fa-square-facebook text-lg"></i>
+                            <span>Continue with Facebook</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <p class="mt-8 text-center text-sm text-gray-600">
+                Don't have any account?
+                <a class="font-medium text-primary hover:text-primary/80" href="#">Register</a>
+            </p>
         </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700" for="password"
-            >Password</label
-          >
-          <div class="mt-1 relative">
-            <input
-              autocomplete="current-password"
-              class="w-full px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary text-gray-900"
-              id="password"
-              name="password"
-              placeholder="••••••••"
-              required
-              type="password"
-            />
-          </div>
-        </div>
-        <div class="flex items-center justify-between">
-          <div class="text-sm">
-            <a class="font-medium text-primary hover:text-primary/80" href="#"
-              >Forgot Password?</a
-            >
-          </div>
-        </div>
-        <div>
-          <button
-            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black transition-all duration-200 hover:-translate-y-[4px] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            type="submit"
-          >
-            Login
-          </button>
-        </div>
-      </form>
-      <div class="mt-6">
-        <div class="relative">
-          <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-gray-300"></div>
-          </div>
-          <div class="relative flex justify-center text-sm">
-            <span class="px-2 bg-white text-gray-500">Instant Login</span>
-          </div>
-        </div>
-        <div class="mt-6 grid grid-cols-1 gap-3">
-          <div>
-            <a
-              class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
-              href="#"
-            >
-              <i class="fa-brands fa-google text-lg"></i>
-              <span>Continue with Google</span>
-            </a>
-          </div>
-          <div>
-            <a
-              class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
-              href="#"
-            >
-              <i class="fa-brands fa-square-facebook text-lg"></i>
-              <span>Continue with Facebook</span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <p class="mt-8 text-center text-sm text-gray-600">
-        Don't have any account?
-        <a class="font-medium text-primary hover:text-primary/80" href="#"
-          >Register</a
-        >
-      </p>
     </div>
-  </div>
 </div>
+
+{% else %}
+
+<div class="edit-container">
+    <div class="page-header">
+        <h1>User Registration</h1>
+        <p>Please provide valid credentials</p>
+    </div>
+
+    <form id="profileForm" method="POST" action="{% url 'register' %}" >
+        {% csrf_token %}
+
+        <!-- Personal Details Section -->
+        <div class="form-section">
+            <h2 class="section-title">Personal Details</h2>
+            <div class="form-info">
+                <strong>💡 Tip:</strong> Keep your information valid to ensure smooth
+                delivery and communication.
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="fullName">Full Name <span class="required">*</span></label>
+                    <input type="text" id="fullName" name="fullname" onblur="nameValidation('fullName','nameErr')"
+                        required />
+                    <span class="error" id="nameErr"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" onblur="emailValidation('email','emailErr')" required />
+                    <span class="error" id="emailErr"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" onblur="contactValidation('phone','phoneErr')" required />
+                    <span class="error" id="phoneErr"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="deliveryAddress">Default Delivery Address</label>
+                    <select id="deliveryAddress" name="delivery_addr">
+                        <option disabled selected>Select Delivery Address</option>
+                        {% for addr in delivery_addresses %}
+                        <option value="{{ addr.id }}">{{ addr.location }}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="error"></span>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="address">Primary Address <span class="required">*</span></label>
+                    <textarea id="address" name="address" onblur="addressValidation('address','adddressErr')"
+                        required></textarea>
+                    <span class="error" id="adddressErr"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Password Section -->
+        <div class="form-section">
+            <h2 class="section-title">Password</h2>
+
+            <div class="form-info">
+                <strong>🔒 Security:</strong> Choose a strong password with at least 8
+                characters, including uppercase, lowercase, numbers, and special
+                characters.
+            </div>
+
+            <div class="form-group">
+                <label for="newPassword">Password <span class="required">*</span></label>
+                <div class="input-group">
+                    <input type="password" id="newPassword" name="pass"
+                        onblur="passwordValidation('newPassword','newPassErr')" required />
+                    <span class="input-icon" onclick="togglePassword('newPassword')"><i
+                            class="fa-solid fa-eye"></i></span>
+                    <span class="error" id="newPassErr"></span>
+                </div>
+
+                <div class="password-strength" id="passwordStrength">
+                    <div class="strength-bar">
+                        <div class="strength-fill"></div>
+                    </div>
+                    <br />
+                    <span class="strength-text">Password strength: Not entered</span>
+                </div>
+                <div class="password-help">
+                    Password must be at least 8 characters long and contain uppercase,
+                    lowercase, numbers, and special characters.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm New Password <span class="required">*</span></label>
+                <div class="input-group">
+                    <input type="password" id="confirmPassword" name="cpass"
+                        onblur="checkPass('confirmPassword','newPassword','confirmPassErr')" required />
+                    <span class="input-icon" onclick="togglePassword('confirmPassword')"><i
+                            class="fa-solid fa-eye"></i></span>
+                    <span class="error" id="confirmPassErr"></span>
+                </div>
+                <div id="passwordMatch" class="password-help"></div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="btn-group">
+            <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                Cancel
+            </button>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+    </form>
+</div>
+
 {% endif %} {% endblock body %}
