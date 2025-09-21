@@ -11,7 +11,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-from django.db import models
 
 
 # DeliveryAddress Table
@@ -51,6 +50,11 @@ class Product(models.Model):
     ], default="other")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
 
+    def get_final_price(self):
+        if self.discount_price:
+            return self.price - self.discount_price
+        return self.price
+
     @property
     def discount_percentage(self):
         """Return discount percentage if discount_price exists"""
@@ -60,9 +64,9 @@ class Product(models.Model):
         return None
     
     @property
-    def before_discount(self):
+    def after_discount(self):
         if self.discount_price:
-            return self.price + self.discount_price
+            return self.price - self.discount_price
         return self.price
 
     
@@ -75,6 +79,10 @@ class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="carts")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def total_price(self):
+        return sum(item.get_total_price() for item in self.items.all())
+    
 
 
 # CartItem Table
@@ -85,6 +93,9 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name}"
+    
+    def get_total_price(self):
+        return self.product.get_final_price() * self.quantity
 
 
 # Wishlist Table

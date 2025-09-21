@@ -168,7 +168,7 @@
             {% if product.discount_price %}
             <span class="text-gray-400 line-through text-[16px]">Rs.{{ product.price }}</span>
             <span class="text-[20px] font-bold text-black">
-              Rs.{{ product.before_discount }}
+              Rs.{{ product.after_discount }}
             </span>
             {% else %}
             <span class="text-[20px] font-bold text-black">Rs.{{ product.price }}</span>
@@ -179,7 +179,7 @@
 
           <!-- Add to Cart -->
           <div class="flex gap-3">
-            <button onclick="addToCart({{ product.id }})"
+            <button onclick="addToCart({{ product.id }}, event)"
               class="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-md text-sm font-medium text-white bg-black transition-all duration-200 hover:bg-gray-800 hover:-translate-y-[1px]">
               <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-[16px] h-[16px]">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

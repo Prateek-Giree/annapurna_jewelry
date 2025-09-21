@@ -50,31 +50,65 @@ function toggleWishlist(button, productId) {
   }
 }
 
-function addToCart(productId) {
-  cart.push(productId);
-
-  const button = event.target.closest(".btn-primary, button");
+function addToCart(productId, event) {
+  event.preventDefault(); // stops page reload for <a>
+  
+  // Find the clicked element (button or link)
+  const button = event.currentTarget;
   const originalText = button.innerHTML;
 
+  // --- UI change (yours, unchanged) ---
   button.innerHTML = `
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-[16px] h-[16px]">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-          </svg>
-          Added!
-        `;
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-[16px] h-[16px]">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+    </svg>
+    Added!
+  `;
   button.style.backgroundColor = "#22c55e";
 
   setTimeout(() => {
     button.innerHTML = originalText;
     button.style.backgroundColor = "#000";
   }, 1500);
+
+  // --- AJAX request to Django ---
+  fetch("/add-to-cart/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": getCookie("csrftoken"), // CSRF for Django
+    },
+    body: JSON.stringify({ product_id: productId })
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log("Cart updated:", data);
+    // optionally update cart count in navbar
+    if (data.cart_count !== undefined) {
+      document.querySelector("#cart-count").textContent = data.cart_count;
+    }
+  })
+  .catch(err => console.error("Error adding to cart:", err));
+}
+
+// Helper to fetch CSRF token from cookie
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + "=")) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
 }
 
 
-
-
 // Password show or hide
-
 function togglePassword(fieldId) {
   const field = document.getElementById(fieldId);
 
@@ -154,3 +188,57 @@ document.addEventListener("DOMContentLoaded", function () {
     checkPasswordStrength(this.value);
   });
 });
+
+
+// Cart functionality
+document.addEventListener("DOMContentLoaded", () => {
+  const checkboxes = document.querySelectorAll("input[name='selected_items']");
+  const quantityInputs = document.querySelectorAll(".quantity-input");
+
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", updateCartTotal);
+  });
+
+  quantityInputs.forEach((input) => {
+    input.addEventListener("input", () => {
+      const row = input.closest("tr");
+      updateRowSubtotal(row);
+      updateCartTotal();
+    });
+  });
+
+  document
+    .querySelectorAll("tbody tr")
+    .forEach((row) => updateRowSubtotal(row));
+  updateCartTotal();
+});
+
+function updateRowSubtotal(row) {
+  const priceText = row
+    .querySelector(".unit-price")
+    .textContent.replace("Rs", "")
+    .trim();
+  const price = parseFloat(priceText) || 0;
+  const qtyInput = row.querySelector(".quantity-input");
+  const qty = parseInt(qtyInput.value) || 0;
+  const subtotal = (price * qty).toFixed(2);
+  row.querySelector(".subtotal").textContent = `Rs ${subtotal}`;
+}
+
+function updateCartTotal() {
+  let total = 0;
+  document.querySelectorAll("tbody tr").forEach((row) => {
+    const checkbox = row.querySelector("input[type='checkbox']");
+    if (checkbox.checked) {
+      const subtotalText = row
+        .querySelector(".subtotal")
+        .textContent.replace("Rs", "")
+        .trim();
+      total += parseFloat(subtotalText) || 0;
+    }
+  });
+
+  total = total.toFixed(2);
+  document.getElementById("cart-subtotal").textContent = `Rs ${total}`;
+  document.getElementById("cart-total").textContent = `Rs ${total}`;
+}
