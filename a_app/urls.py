@@ -3,10 +3,11 @@ from a_app import views
 
 urlpatterns = [
     path("", views.index, name="index"),
+    
     path("login/", views.login, name="login"),
     path("register/", views.register, name="register"),
     path("logout/", views.logout, name="logout"),
-    path("register/", views.register, name="register"),
+    
     path("cart/", views.cart, name="cart"),
     path("add-to-cart/", views.add_to_cart, name="add_to_cart"),
     path("remove_from_cart/<int:pk>", views.remove_from_cart, name="remove_from_cart"),

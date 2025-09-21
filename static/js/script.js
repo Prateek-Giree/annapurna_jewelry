@@ -4,7 +4,6 @@ let current = 0;
 
 function showSlide(index) {
   slides.forEach((slide, i) => {
-    // Hide all slides
     slide.classList.remove(
       "opacity-100",
       "slide-active",
@@ -12,7 +11,6 @@ function showSlide(index) {
     );
     slide.classList.add("opacity-0", "pointer-events-none");
 
-    // Show the active one
     if (i === index) {
       slide.classList.remove("opacity-0", "pointer-events-none");
       slide.classList.add("opacity-100", "slide-active", "pointer-events-auto");
@@ -39,11 +37,11 @@ let cart = [];
 
 function toggleWishlist(button, productId) {
   const index = wishlist.indexOf(productId);
-  const card = button.closest(".group"); // get parent card
+  const card = button.closest(".group");
 
   if (index > -1) {
     wishlist.splice(index, 1);
-    card.classList.remove("active"); // toggle on parent
+    card.classList.remove("active");
   } else {
     wishlist.push(productId);
     card.classList.add("active");
@@ -51,13 +49,14 @@ function toggleWishlist(button, productId) {
 }
 
 function addToCart(productId, event) {
-  event.preventDefault(); // stops page reload for <a>
-  
-  // Find the clicked element (button or link)
-  const button = event.currentTarget;
-  const originalText = button.innerHTML;
+  event.preventDefault(); 
+    const button = event.currentTarget;
+    if (!isAuthenticated) {
+        const loginUrl = button.dataset.loginUrl; 
+        window.location.href = loginUrl;
+        return;
+    }
 
-  // --- UI change (yours, unchanged) ---
   button.innerHTML = `
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-[16px] h-[16px]">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
@@ -71,12 +70,11 @@ function addToCart(productId, event) {
     button.style.backgroundColor = "#000";
   }, 1500);
 
-  // --- AJAX request to Django ---
   fetch("/add-to-cart/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRFToken": getCookie("csrftoken"), // CSRF for Django
+      "X-CSRFToken": getCookie("csrftoken"),
     },
     body: JSON.stringify({ product_id: productId })
   })
@@ -91,7 +89,6 @@ function addToCart(productId, event) {
   .catch(err => console.error("Error adding to cart:", err));
 }
 
-// Helper to fetch CSRF token from cookie
 function getCookie(name) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== "") {

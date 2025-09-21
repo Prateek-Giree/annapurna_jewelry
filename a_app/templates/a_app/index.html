@@ -180,6 +180,7 @@
           <!-- Add to Cart -->
           <div class="flex gap-3">
             <button onclick="addToCart({{ product.id }}, event)"
+            data-login-url="{% url 'login' %}"
               class="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-md text-sm font-medium text-white bg-black transition-all duration-200 hover:bg-gray-800 hover:-translate-y-[1px]">
               <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-[16px] h-[16px]">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -275,5 +276,8 @@
     </div>
   </div>
 </section>
+<script>
+  const isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
+</script>
 
 {% endblock body %}

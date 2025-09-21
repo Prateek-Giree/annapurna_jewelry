@@ -112,6 +112,7 @@ def cart(request):
 
 
 @csrf_exempt
+@login_required(login_url="login")
 def add_to_cart(request):
     if request.method == "POST":
         data = json.loads(request.body)
