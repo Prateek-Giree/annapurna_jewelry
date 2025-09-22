@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock title %}
+
+{% block body %}
+<div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden p-6 md:p-10">
+
+  <!-- Header -->
+  <div class="text-center mb-8">
+    <h2 class="text-2xl md:text-3xl font-semibold text-gray-800">Checkout Summary</h2>
+  </div>
+
+  <!-- User Details -->
+  <div class="mb-8">
+    <h3 class="text-lg md:text-xl font-medium text-gray-700 mb-4 border-b-2 border-gray-200 pb-2">User Details</h3>
+    <div class="bg-gray-50 rounded-lg border border-gray-200 p-5">
+      <ul class="space-y-2">
+        <li class="flex flex-col md:flex-row md:items-center md:gap-4">
+          <strong class="text-gray-600 w-36">Name:</strong>
+          <span class="text-gray-800">{{ user.get_full_name|default:user.username }}</span>
+        </li>
+        <li class="flex flex-col md:flex-row md:items-center md:gap-4">
+          <strong class="text-gray-600 w-36">Email:</strong>
+          <span class="text-gray-800">{{ user.email }}</span>
+        </li>
+        <li class="flex flex-col md:flex-row md:items-center md:gap-4">
+          <strong class="text-gray-600 w-36">Phone:</strong>
+          <span class="text-gray-800">{{ profile.phone }}</span>
+        </li>
+        <li class="flex flex-col md:flex-row md:items-center md:gap-4">
+          <strong class="text-gray-600 w-36">Address:</strong>
+          <span class="text-gray-800">{{ profile.address }}</span>
+        </li>
+        <li class="flex flex-col md:flex-row md:items-center md:gap-4">
+          <strong class="text-gray-600 w-36">Delivery Address:</strong>
+          <span class="text-gray-800">{{ profile.delivery_address }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Checkout Form -->
+  <form method="post" class="space-y-6">
+    {% csrf_token %}
+    <input type="hidden" name="action_type" value="place_order">
+
+    <!-- Cart Table -->
+    <div>
+      <h3 class="text-lg md:text-xl font-medium text-gray-700 mb-4 border-b-2 border-gray-200 pb-2">Your Cart</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse shadow-sm">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="px-4 py-2 text-xs font-medium text-gray-600 uppercase">Select</th>
+              <th class="px-4 py-2 text-xs font-medium text-gray-600 uppercase">Product</th>
+              <th class="px-4 py-2 text-xs font-medium text-gray-600 uppercase">Qty</th>
+              <th class="px-4 py-2 text-xs font-medium text-gray-600 uppercase">Price</th>
+              <th class="px-4 py-2 text-xs font-medium text-gray-600 uppercase">Total</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            {% for item in cart_items %}
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 py-2">
+                <input type="checkbox" name="selected_items" value="{{ item.id }}" checked class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded">
+              </td>
+              <td class="px-4 py-2 text-gray-800">{{ item.product.name }}</td>
+              <td class="px-4 py-2 text-gray-700">{{ item.quantity }}</td>
+              <td class="px-4 py-2 text-green-600">{{ item.product.new_price|default:item.product.price }}</td>
+              <td class="px-4 py-2 text-green-600 font-semibold">{{ item.get_total_price }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Total Section -->
+    <div class="bg-gray-100 rounded-lg p-5 text-right border border-gray-200">
+      <p class="text-xl md:text-2xl font-semibold text-gray-800">Total Price: Rs. {{ cart.total_price }}</p>
+    </div>
+
+    <!-- Checkout Buttons -->
+    <div class="flex flex-col md:flex-row justify-between gap-4">
+      <button type="submit" name="cod" value="cod" class="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-medium text-sm md:text-base px-6 py-3 rounded-lg transition-all duration-200 uppercase shadow-md">Pay After Delivery</button>
+      {% comment %} <button type="submit" name="esewa" value="esewa" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm md:text-base px-6 py-3 rounded-lg transition-all duration-200 uppercase shadow-md">Pay with E-sewa</button> {% endcomment %}
+    </div>
+  </form>
+</div>
+{% endblock body %}
