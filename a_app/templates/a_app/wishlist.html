@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %} Wishlist {% endblock title %}
+{% block body %}
+{% load static %}
+
+<div class="max-w-5xl mx-auto px-4 py-10">
+  <h1 class="text-3xl md:text-4xl font-medium text-gray-700 text-center mb-10">
+    My Wishlist
+  </h1>
+
+  <div class="bg-white rounded-lg shadow">
+    <div class="hidden md:grid grid-cols-[80px_1fr_150px_120px_120px] gap-6 items-center bg-gray-100 border-b border-gray-200 p-5 text-sm font-medium text-gray-600">
+      <div></div>
+      <div>Product name</div>
+      <div>Unit price</div>
+      <div>Stock status</div>
+      <div></div>
+    </div>
+
+    {% if wishlist_items %}
+      {% for item in wishlist_items %}
+      <div class="p-5 border-b border-gray-100 hover:bg-gray-50 transition-colors flex flex-col md:grid md:grid-cols-[80px_1fr_150px_120px_120px] gap-6 items-center">
+        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-16 h-20 object-cover rounded-md mx-auto md:mx-0">
+
+        <div class="flex flex-col gap-1 text-center md:text-left">
+          <span class="font-medium text-gray-800 text-base">{{ item.product.name }}</span>
+          <span class="text-sm text-gray-500">Added on: {{ item.added_at|date:"F j, Y" }}</span>
+        </div>
+
+        <div class="font-medium text-gray-800">
+          {% if item.product.new_price %}
+            <span class="line-through text-gray-400 text-sm mr-2">Rs {{ item.product.price }}</span>
+            Rs {{ item.product.new_price }}
+          {% else %}
+            Rs {{ item.product.price }}
+          {% endif %}
+        </div>
+
+        <div class="text-sm font-medium {% if item.product.stock > 0 %}text-green-600{% else %}text-red-500{% endif %}">
+          {% if item.product.stock > 0 %}
+            In Stock
+          {% else %}
+            Out of Stock
+          {% endif %}
+        </div>
+
+        <div class="flex gap-3 items-center">
+          <!-- Add to cart -->
+          <button 
+            onclick="addToCart({{ item.product.id }}, event)" 
+            data-login-url="{% url 'login' %}"
+            class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium text-white bg-black transition-all duration-200 hover:bg-gray-800 hover:-translate-y-[1px]">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l5.5 11" />
+            </svg>
+            Cart
+          </button>
+
+          <!-- Remove from wishlist -->
+          <form method="POST" action="{% url 'remove_from_wishlist' item.product.id %}">
+            {% csrf_token %}
+            <button onclick="return confirm('Are you sure want to cancel?')" 
+              class="text-red-500 hover:bg-gray-100 rounded-md p-2 transition-colors text-lg font-bold" 
+              type="submit">×</button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="p-6 text-center text-gray-500">Your wishlist is empty.</p>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  const isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
+</script>
+{% endblock body %}

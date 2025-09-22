@@ -214,3 +214,34 @@ def update_cart(request):
 def cart_count(request):
     count = request.user.cart.items.count()
     return HttpResponse(count)
+
+@login_required(login_url="login")
+def wishlist(request):
+    wishlist_items = Wishlist.objects.filter(user=request.user).select_related(
+        "product"
+    )
+    return render(request, "a_app/wishlist.html", {"wishlist_items": wishlist_items})
+
+
+@login_required(login_url="login")
+def add_to_wishlist(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    created = Wishlist.objects.get_or_create(
+        user=request.user, product=product
+    )
+
+    if created:
+        messages.success(request, f"{product.name} added to wishlist successfully!")
+    else:
+        messages.info(request, f" {product.name} is already in your wishlist.")
+
+    return redirect(request.META.get("HTTP_REFERER", "index"))
+
+
+@login_required(login_url="login")
+def remove_from_wishlist(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    Wishlist.objects.filter(user=request.user, product=product).delete()
+    messages.success(request, f"{product.name} removed from wishlist successfully!")
+
+    return redirect("wishlist")
