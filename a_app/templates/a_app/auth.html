@@ -89,117 +89,154 @@
 
 {% else %}
 
-<div class="edit-container">
-    <div class="page-header">
-        <h1>User Registration</h1>
-        <p>Please provide valid credentials</p>
+<div class="max-w-4xl mx-auto my-10 px-4">
+  <div class="text-center mb-10">
+    <h1 class="text-3xl font-semibold text-gray-800 mb-2">User Registration</h1>
+    <p class="text-gray-500 text-base">Please provide valid credentials</p>
+  </div>
+
+  <form id="profileForm" method="POST" action="{% url 'register' %}">
+    {% csrf_token %}
+
+    <!-- Personal Details Section -->
+    <div class="bg-white rounded-xl p-6 md:p-8 mb-8 shadow-sm border border-gray-200">
+      <h2 class="text-lg font-semibold text-gray-800 mb-5 pb-2 border-b-2 border-blue-500 inline-block">
+        Personal Details
+      </h2>
+
+      <div class="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6 text-sm text-blue-900">
+        <strong>💡 Tip:</strong> Keep your information valid to ensure smooth delivery and communication.
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="flex flex-col gap-2">
+          <label for="fullName" class="text-sm font-medium text-gray-700">
+            Full Name <span class="text-red-500">*</span>
+          </label>
+          <input type="text" id="fullName" name="fullname"
+            onblur="nameValidation('fullName','nameErr')"
+            required
+            class="p-3 border-2 border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+          <span class="error text-red-500 text-xs font-mono" id="nameErr"></span>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="email" class="text-sm font-medium text-gray-700">
+            Email Address <span class="text-red-500">*</span>
+          </label>
+          <input type="email" id="email" name="email"
+            onblur="emailValidation('email','emailErr')"
+            required
+            class="p-3 border-2 border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+          <span class="error text-red-500 text-xs font-mono" id="emailErr"></span>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="phone" class="text-sm font-medium text-gray-700">
+            Phone Number <span class="text-red-500">*</span>
+          </label>
+          <input type="tel" id="phone" name="phone"
+            onblur="contactValidation('phone','phoneErr')"
+            required
+            class="p-3 border-2 border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+          <span class="error text-red-500 text-xs font-mono" id="phoneErr"></span>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="deliveryAddress" class="text-sm font-medium text-gray-700">
+            Default Delivery Address
+          </label>
+          <select id="deliveryAddress" name="delivery_addr"
+            class="p-3 border-2 border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+            <option disabled selected>Select Delivery Address</option>
+            {% for addr in delivery_addresses %}
+            <option value="{{ addr.id }}">{{ addr.location }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="flex flex-col gap-2 md:col-span-2">
+          <label for="address" class="text-sm font-medium text-gray-700">
+            Primary Address <span class="text-red-500">*</span>
+          </label>
+          <textarea id="address" name="address"
+            onblur="addressValidation('address','adddressErr')"
+            required
+            class="p-3 border-2 border-gray-200 rounded-lg text-sm min-h-[100px] resize-y focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
+          <span class="error text-red-500 text-xs font-mono" id="adddressErr"></span>
+        </div>
+      </div>
     </div>
 
-    <form id="profileForm" method="POST" action="{% url 'register' %}" >
-        {% csrf_token %}
+    <!-- Password Section -->
+    <div class="bg-white rounded-xl p-6 md:p-8 mb-8 shadow-sm border border-gray-200">
+      <h2 class="text-lg font-semibold text-gray-800 mb-5 pb-2 border-b-2 border-blue-500 inline-block">
+        Password
+      </h2>
 
-        <!-- Personal Details Section -->
-        <div class="form-section">
-            <h2 class="section-title">Personal Details</h2>
-            <div class="form-info">
-                <strong>💡 Tip:</strong> Keep your information valid to ensure smooth
-                delivery and communication.
-            </div>
+      <div class="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6 text-sm text-blue-900">
+        <strong>🔒 Security:</strong> Choose a strong password with at least 8 characters, including uppercase,
+        lowercase, numbers, and special characters.
+      </div>
 
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="fullName">Full Name <span class="required">*</span></label>
-                    <input type="text" id="fullName" name="fullname" onblur="nameValidation('fullName','nameErr')"
-                        required />
-                    <span class="error" id="nameErr"></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email Address <span class="required">*</span></label>
-                    <input type="email" id="email" name="email" onblur="emailValidation('email','emailErr')" required />
-                    <span class="error" id="emailErr"></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">Phone Number <span class="required">*</span></label>
-                    <input type="tel" id="phone" name="phone" onblur="contactValidation('phone','phoneErr')" required />
-                    <span class="error" id="phoneErr"></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="deliveryAddress">Default Delivery Address</label>
-                    <select id="deliveryAddress" name="delivery_addr">
-                        <option disabled selected>Select Delivery Address</option>
-                        {% for addr in delivery_addresses %}
-                        <option value="{{ addr.id }}">{{ addr.location }}</option>
-                        {% endfor %}
-                    </select>
-                    <span class="error"></span>
-                </div>
-
-                <div class="form-group full-width">
-                    <label for="address">Primary Address <span class="required">*</span></label>
-                    <textarea id="address" name="address" onblur="addressValidation('address','adddressErr')"
-                        required></textarea>
-                    <span class="error" id="adddressErr"></span>
-                </div>
-            </div>
+      <div class="flex flex-col gap-2 mb-6">
+        <label for="newPassword" class="text-sm font-medium text-gray-700">
+          Password <span class="text-red-500">*</span>
+        </label>
+        <div class="relative">
+          <input type="password" id="newPassword" name="pass"
+            onblur="passwordValidation('newPassword','newPassErr')"
+            required
+            class="w-full p-3 border-2 border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+          <span class="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-500"
+            onclick="togglePassword('newPassword')">
+            <i class="fa-solid fa-eye"></i>
+          </span>
         </div>
+        <span class="error text-red-500 text-xs font-mono" id="newPassErr"></span>
 
-        <!-- Password Section -->
-        <div class="form-section">
-            <h2 class="section-title">Password</h2>
-
-            <div class="form-info">
-                <strong>🔒 Security:</strong> Choose a strong password with at least 8
-                characters, including uppercase, lowercase, numbers, and special
-                characters.
-            </div>
-
-            <div class="form-group">
-                <label for="newPassword">Password <span class="required">*</span></label>
-                <div class="input-group">
-                    <input type="password" id="newPassword" name="pass"
-                        onblur="passwordValidation('newPassword','newPassErr')" required />
-                    <span class="input-icon" onclick="togglePassword('newPassword')"><i
-                            class="fa-solid fa-eye"></i></span>
-                    <span class="error" id="newPassErr"></span>
-                </div>
-
-                <div class="password-strength" id="passwordStrength">
-                    <div class="strength-bar">
-                        <div class="strength-fill"></div>
-                    </div>
-                    <br />
-                    <span class="strength-text">Password strength: Not entered</span>
-                </div>
-                <div class="password-help">
-                    Password must be at least 8 characters long and contain uppercase,
-                    lowercase, numbers, and special characters.
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="confirmPassword">Confirm New Password <span class="required">*</span></label>
-                <div class="input-group">
-                    <input type="password" id="confirmPassword" name="cpass"
-                        onblur="checkPass('confirmPassword','newPassword','confirmPassErr')" required />
-                    <span class="input-icon" onclick="togglePassword('confirmPassword')"><i
-                            class="fa-solid fa-eye"></i></span>
-                    <span class="error" id="confirmPassErr"></span>
-                </div>
-                <div id="passwordMatch" class="password-help"></div>
-            </div>
+        <div class="mt-2">
+          <div class="h-1 w-full bg-gray-200 rounded overflow-hidden">
+            <div class="strength-fill h-full rounded transition-all duration-300"></div>
+          </div>
+          <p class="strength-text text-xs text-gray-600 mt-2">Password strength: Not entered</p>
+          <p class="text-xs text-gray-500 mt-1">
+            Password must be at least 8 characters long and contain uppercase, lowercase, numbers, and special characters.
+          </p>
         </div>
+      </div>
 
-        <!-- Action Buttons -->
-        <div class="btn-group">
-            <button type="button" class="btn btn-secondary" onclick="resetForm()">
-                Cancel
-            </button>
-            <button type="submit" class="btn btn-primary">Register</button>
+      <div class="flex flex-col gap-2">
+        <label for="confirmPassword" class="text-sm font-medium text-gray-700">
+          Confirm New Password <span class="text-red-500">*</span>
+        </label>
+        <div class="relative">
+          <input type="password" id="confirmPassword" name="cpass"
+            onblur="checkPass('confirmPassword','newPassword','confirmPassErr')"
+            required
+            class="w-full p-3 border-2 border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+          <span class="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-500"
+            onclick="togglePassword('confirmPassword')">
+            <i class="fa-solid fa-eye"></i>
+          </span>
         </div>
-    </form>
+        <span class="error text-red-500 text-xs font-mono" id="confirmPassErr"></span>
+        <div id="passwordMatch" class="text-xs text-gray-500 mt-1"></div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-end gap-4 mt-8">
+      <button type="button" class="px-6 py-3 rounded-lg bg-gray-400 text-white text-sm font-medium hover:bg-gray-500"
+        onclick="resetForm()">
+        Cancel
+      </button>
+      <button type="submit"
+        class="px-6 py-3 rounded-lg bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition transform hover:-translate-y-0.5">
+        Register
+      </button>
+    </div>
+  </form>
 </div>
 
 {% endif %} {% endblock body %}

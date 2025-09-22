@@ -1,104 +1,123 @@
-{% extends "base.html" %} {% load static %} {% block title %}Cart
-{% endblock title %} {% block body %}
-<div class="cart-container">
-  <div class="cart-header">
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Cart{% endblock title %}
+
+{% block body %}
+<div class="max-w-6xl mx-auto px-4 py-10">
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
     <div>
-      <h1 class="cart-title">Your Cart</h1>
-      <p class="cart-count">
-        There are {{ cart_items|length }} products in your cart
-      </p>
+      <h1 class="text-2xl font-semibold text-gray-800">Your Cart</h1>
+      <p class="text-sm text-gray-500">There are {{ cart_items|length }} products in your cart</p>
     </div>
-    <form method="POST" action="{% url 'clear_cart' %}" style="display: inline">
+    <form method="POST" action="{% url 'clear_cart' %}">
       {% csrf_token %}
-      <button type="submit" class="clear-cart">
+      <button type="submit"
+        class="flex items-center gap-2 text-red-600 font-medium hover:underline text-sm">
         <i class="fa-solid fa-trash"></i> Clear Cart
       </button>
     </form>
   </div>
 
-  <div class="Main-content">
-    <div class="cart-table-container">
+  <!-- Main Content -->
+  <div class="flex flex-col lg:flex-row gap-10">
+    <!-- Cart Table -->
+    <div class="flex-1 bg-white shadow rounded-lg overflow-hidden">
       <form method="POST" action="">
         {% csrf_token %}
         <input type="hidden" name="action_type" value="proceed_to_checkout" />
 
-        <div>
-          <table class="cart-table">
-            <thead>
-              <tr>
-                <th>Select</th>
-                <th>Product</th>
-                <th>Title</th>
-                <th>Unit Price</th>
-                <th>Quantity</th>
-                <th style="width: 200px;">Subtotal</th>
-                <th>Remove</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for item in items %}
-              <tr>
-                <td>
-                  <input type="checkbox" name="selected_items" value="{{ item.id }}" />
-                </td>
-                <td>
-                  <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="product-image" />
-                </td>
-                <td>{{ item.product.name }}</td>
-                <td>
-                  <div class="price unit-price">
-                    Rs {{ item.product.after_discount }}
-                  </div>
-                </td>
-                <td>
-                  <input type="number" style="width: 80px; color: #333;" name="quantity_{{ item.id }}" value="{{ item.quantity }}" min="1"
-                    max="{{ item.product.stock }}" class="quantity-input" />
-                </td>
-                <td>
-                  <div class="subtotal">Rs {{ item.get_total_price }}</div>
-                </td>
-                <td>
-                  <a href="{% url 'remove_from_cart' item.id %}" class="remove-btn"
-                    onclick="return confirm('Are you sure you want to remove this item from your cart?');">
-                    <i class="fa-solid fa-trash"></i>
-                  </a>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-          {% if items %}
-          <div class="cart-actions">
-            <a href="{% url 'index' %}" class="continue-shopping">
-              ← Continue Shopping
-            </a>
-            <button formaction="{% url 'update_cart' %}" type="submit" class="update-cart">
-              <i class="fa-solid fa-rotate"></i> Update Cart
-            </button>
-          </div>
-          {% endif %}
+        <div class="overflow-x-auto">
+        <table class="w-full text-sm text-gray-600 border-collapse">
+  <thead class="bg-gray-100 text-gray-700 font-semibold">
+    <tr>
+      <th class="p-3 text-left">Select</th>
+      <th class="p-3 text-left">Product</th>
+      <th class="p-3 text-left">Title</th>
+      <th class="p-3 text-left">Unit Price</th>
+      <th class="p-3 text-left">Quantity</th>
+      <th class="p-3 text-left w-32">Subtotal</th>
+      <th class="p-3 text-left">Remove</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr class="border-b">
+      <td class="p-3">
+        <input type="checkbox" name="selected_items" value="{{ item.id }}"
+               class="w-4 h-4 text-green-600 rounded border-gray-300" checked />
+      </td>
+      <td class="p-3">
+        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}"
+             class="w-20 h-20 rounded-lg object-cover" />
+      </td>
+      <td class="p-3 font-medium text-gray-800">{{ item.product.name }}</td>
+      <td class="p-3 font-semibold text-gray-800 unit-price">
+        Rs {{ item.product.after_discount }}
+      </td>
+      <td class="p-3">
+        <input type="number" name="quantity_{{ item.id }}" value="{{ item.quantity }}" min="1"
+               max="{{ item.product.stock }}"
+               class="quantity-input w-20 px-2 py-1 border border-gray-300 rounded text-center text-gray-800" />
+      </td>
+      <td class="p-3 font-semibold text-green-600 subtotal">
+        Rs {{ item.get_total_price }}
+      </td>
+      <td class="p-3">
+        <a href="{% url 'remove_from_cart' item.id %}"
+           onclick="return confirm('Are you sure you want to remove this item from your cart?');"
+           class="text-red-600 hover:text-red-700">
+           <i class="fa-solid fa-trash"></i>
+        </a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="7" class="p-6 text-center text-gray-500">Your cart is empty.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
         </div>
-        <div class="checkout-sidebar">
-          <div class="summary-card">
-            <div class="summary-row">
-              <span class="summary-label">Subtotal</span>
-              <span class="summary-value" id="cart-subtotal">Rs 0.00</span>
-            </div>
-            <div class="summary-row">
-              <span class="summary-label">Shipping</span>
-              <span class="summary-value">Free</span>
-            </div>
-            <div class="summary-row">
-              <span class="summary-label">Total</span>
-              <span class="summary-value" id="cart-total">Rs 0.00</span>
-            </div>
-            <button type="submit" class="checkout-btn">
-              Proceed to Checkout →
-            </button>
-          </div>
+
+        {% if items %}
+        <div class="flex justify-between items-center mt-5 gap-4">
+          <a href="{% url 'index' %}"
+            class="inline-flex items-center gap-2 bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 text-sm font-medium">
+            ← Continue Shopping
+          </a>
+          <button formaction="{% url 'update_cart' %}" type="submit"
+            class="inline-flex items-center gap-2 bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 text-sm font-medium">
+            <i class="fa-solid fa-rotate"></i> Update Cart
+          </button>
         </div>
-      </form>
+        {% endif %}
     </div>
+
+    <!-- Summary Sidebar -->
+    <div class="w-full lg:w-80">
+      <div class="bg-white shadow rounded-lg p-6">
+        <div class="flex justify-between mb-4">
+          <span class="text-gray-600">Subtotal</span>
+          <span class="font-semibold text-green-600" id="cart-subtotal">Rs 0.00</span>
+        </div>
+        <div class="flex justify-between mb-4">
+          <span class="text-gray-600">Shipping</span>
+          <span class="font-medium text-gray-800">Free</span>
+        </div>
+        <div class="flex justify-between border-t pt-4 font-semibold text-lg">
+          <span>Total</span>
+          <span class="text-green-600" id="cart-total">Rs 0.00</span>
+        </div>
+        <button type="submit"
+          class="w-full mt-6 bg-green-600 text-white py-3 rounded-md font-semibold hover:bg-green-700 transition flex items-center justify-center gap-2">
+          Proceed to Checkout →
+        </button>
+      </div>
+    </div>
+    </form>
   </div>
 </div>
 {% endblock body %}

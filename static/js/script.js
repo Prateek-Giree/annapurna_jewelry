@@ -118,56 +118,64 @@ function togglePassword(fieldId) {
 
 // Check password strength
 function checkPasswordStrength(password) {
-  let strength = 0;
-  let feedback = "";
+  // If password not provided, read from the input
+  if (typeof password === "undefined") {
+    const pwInput = document.getElementById("newPassword");
+    password = pwInput ? pwInput.value : "";
+  }
 
-  // If password is empty, reset to default state
+  const strengthFill = document.querySelector(".strength-fill");
+  const strengthText = document.querySelector(".strength-text");
+
+  if (!strengthFill || !strengthText) return;
+
   if (password.length === 0) {
-    const strengthElement = document.getElementById("passwordStrength");
-    const strengthText = strengthElement.querySelector(".strength-text");
-    strengthElement.className = "password-strength";
+    strengthFill.style.width = "0%";
+    strengthFill.style.backgroundColor = "";
     strengthText.textContent = "Password strength: Not entered";
     return;
   }
 
-  // Check different criteria
+  let strength = 0;
   if (password.length >= 8) strength += 1;
   if (/[a-z]/.test(password)) strength += 1;
   if (/[A-Z]/.test(password)) strength += 1;
   if (/[0-9]/.test(password)) strength += 1;
   if (/[^A-Za-z0-9]/.test(password)) strength += 1;
 
-  const strengthElement = document.getElementById("passwordStrength");
-  const strengthText = strengthElement.querySelector(".strength-text");
+  let percent = 0;
+  let label = "Password strength: Weak";
+  let color = "#ef4444"; // red
 
-  // Reset all classes
-  strengthElement.className = "password-strength";
-
-  // Apply appropriate strength class and feedback
   switch (strength) {
     case 0:
     case 1:
-      strengthElement.classList.add("strength-weak");
-      feedback = "Password strength: Weak";
+      percent = 25;
+      label = "Password strength: Weak";
+      color = "#ef4444";
       break;
     case 2:
-      strengthElement.classList.add("strength-medium");
-      feedback = "Password strength: Medium";
+      percent = 50;
+      label = "Password strength: Medium";
+      color = "#f59e0b"; // amber
       break;
     case 3:
     case 4:
-      strengthElement.classList.add("strength-strong");
-      feedback = "Password strength: Strong";
+      percent = 75;
+      label = "Password strength: Strong";
+      color = "#16a34a"; // green
       break;
     case 5:
-      strengthElement.classList.add("strength-very-strong");
-      feedback = "Password strength: Very Strong";
+      percent = 100;
+      label = "Password strength: Very Strong";
+      color = "#059669"; // emerald
       break;
   }
 
-  strengthText.textContent = feedback;
+  strengthFill.style.width = percent + "%";
+  strengthFill.style.backgroundColor = color;
+  strengthText.textContent = label;
 }
-
 function resetForm() {
   if (
     confirm(
@@ -186,16 +194,17 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
-// Cart functionality
+//Cart functionality
 document.addEventListener("DOMContentLoaded", () => {
   const checkboxes = document.querySelectorAll("input[name='selected_items']");
   const quantityInputs = document.querySelectorAll(".quantity-input");
 
+  // Update totals when checkboxes change
   checkboxes.forEach((checkbox) => {
     checkbox.addEventListener("change", updateCartTotal);
   });
 
+  // Update row subtotal & cart total when quantity changes
   quantityInputs.forEach((input) => {
     input.addEventListener("input", () => {
       const row = input.closest("tr");
@@ -204,17 +213,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  document
-    .querySelectorAll("tbody tr")
-    .forEach((row) => updateRowSubtotal(row));
+  // Initial calculation on page load
+  document.querySelectorAll("tbody tr").forEach((row) => updateRowSubtotal(row));
   updateCartTotal();
 });
 
 function updateRowSubtotal(row) {
-  const priceText = row
-    .querySelector(".unit-price")
-    .textContent.replace("Rs", "")
-    .trim();
+  const priceText = row.querySelector(".unit-price").textContent.replace("Rs", "").trim();
   const price = parseFloat(priceText) || 0;
   const qtyInput = row.querySelector(".quantity-input");
   const qty = parseInt(qtyInput.value) || 0;
@@ -227,15 +232,12 @@ function updateCartTotal() {
   document.querySelectorAll("tbody tr").forEach((row) => {
     const checkbox = row.querySelector("input[type='checkbox']");
     if (checkbox.checked) {
-      const subtotalText = row
-        .querySelector(".subtotal")
-        .textContent.replace("Rs", "")
-        .trim();
+      const subtotalText = row.querySelector(".subtotal").textContent.replace("Rs", "").trim();
       total += parseFloat(subtotalText) || 0;
     }
   });
 
-  total = total.toFixed(2);
-  document.getElementById("cart-subtotal").textContent = `Rs ${total}`;
-  document.getElementById("cart-total").textContent = `Rs ${total}`;
+  const formattedTotal = total.toFixed(2);
+  document.getElementById("cart-subtotal").textContent = `Rs ${formattedTotal}`;
+  document.getElementById("cart-total").textContent = `Rs ${formattedTotal}`;
 }
