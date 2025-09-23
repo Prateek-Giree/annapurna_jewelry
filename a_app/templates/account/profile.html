@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %} FastCart {% endblock title %}
+{% block body %}
+{% load static %}
+
+{% include "profile_sidebar.html" %}
+  <!-- Main content -->
+  <div class="flex-1 p-6 md:ml-0 mt-16 md:mt-0">
+    <div class="bg-white rounded-xl shadow p-6">
+      <h1 class="text-2xl font-semibold text-gray-800 mb-2">My Details</h1>
+      <p class="text-gray-500 mb-6">Overview of your account information and activity</p>
+
+      <!-- Grid details -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <div class="p-4 bg-gray-100 rounded-lg border-l-4 border-blue-500">
+          <p class="text-xs uppercase tracking-wider text-gray-500">Full Name</p>
+          <p class="text-gray-800 font-medium">{{ user.first_name }}</p>
+        </div>
+        <div class="p-4 bg-gray-100 rounded-lg border-l-4 border-blue-500">
+          <p class="text-xs uppercase tracking-wider text-gray-500">Email</p>
+          <p class="text-gray-800 font-medium">{{ user.email }}</p>
+        </div>
+        <div class="p-4 bg-gray-100 rounded-lg border-l-4 border-blue-500">
+          <p class="text-xs uppercase tracking-wider text-gray-500">Phone</p>
+          <p class="text-gray-800 font-medium">{{ user_profile.phone }}</p>
+        </div>
+        <div class="p-4 bg-gray-100 rounded-lg border-l-4 border-blue-500">
+          <p class="text-xs uppercase tracking-wider text-gray-500">Member Since</p>
+          <p class="text-gray-800 font-medium">{{ user.date_joined|date:"F Y" }}</p>
+        </div>
+        <div class="p-4 bg-gray-100 rounded-lg border-l-4 border-blue-500">
+          <p class="text-xs uppercase tracking-wider text-gray-500">Primary Address</p>
+          <p class="text-gray-800 font-medium">{{ user_profile.address }}</p>
+        </div>
+        <div class="p-4 bg-gray-100 rounded-lg border-l-4 border-blue-500">
+          <p class="text-xs uppercase tracking-wider text-gray-500">Delivery Address</p>
+          <p class="text-gray-800 font-medium">{{ delivery_address.location }}</p>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg p-6 text-center">
+          <p class="text-3xl font-bold">{{ cart_items.count }}</p>
+          <p class="text-sm opacity-90">Cart Items</p>
+        </div>
+        <div class="bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-lg p-6 text-center">
+          <p class="text-3xl font-bold">{{ wishlist.count }}</p>
+          <p class="text-sm opacity-90">Wishlist Items</p>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex flex-wrap gap-3">
+        <a href="{% url "edit_profile" %}" class="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
+          <i class="fa-solid fa-pen"></i> Edit Profile
+        </a>
+        <a href="{% url 'cart' %}" class="px-5 py-2.5 border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white flex items-center gap-2">
+          <i class="fa-solid fa-cart-shopping"></i> View Cart
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock body %}

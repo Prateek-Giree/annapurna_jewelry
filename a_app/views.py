@@ -15,7 +15,7 @@ import hmac
 import hashlib
 import base64
 import requests
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib import messages
@@ -27,6 +27,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db import transaction
 from django.db.models import Count
+
 
 # Create your views here.
 
@@ -417,3 +418,115 @@ def checkout_view(request):
             "selected_ids": selected_ids,
         },
     )
+
+@login_required(login_url="login")
+def profile(request, pk):
+    if request.user.id != pk:
+         messages.error(request, "Unsupported action")
+
+
+    # Get the user profile
+    user = request.user  
+    user_profile = get_object_or_404(UserProfile, user=user)
+    delivery_address = user_profile.delivery_address
+
+    # Get the user's wishlist
+    wishlist = Wishlist.objects.filter(user=user)
+
+    # Get the user's cart
+    cart, created = Cart.objects.get_or_create(user=user)
+    cart_items = CartItem.objects.filter(cart=cart)
+
+    # Get users order
+    order_items = OrderItem.objects.filter(order__user=user)
+    order_item_count = order_items.count()
+
+    context = {
+        "user": user,
+        "user_profile": user_profile,
+        "delivery_address": delivery_address,
+        "wishlist": wishlist,
+        "cart_items": cart_items,
+        "order_item_count": order_item_count,
+    }
+    return render(request, "account/profile.html", context)
+
+
+@login_required(login_url="login")
+def edit_profile(request):
+    user = get_object_or_404(User, id=request.user.id)
+    user_profile = get_object_or_404(UserProfile, user=user)
+
+    # Edit personal information
+    if request.method == "POST" and "update_details" in request.POST:
+        full_name = request.POST.get("fullName", "").strip()
+        email = request.POST.get("email", "").strip()
+        phone = request.POST.get("phone", "").strip()
+        primary_address = request.POST.get("address", "").strip()
+        delivery_address_id = request.POST.get("delivery_addr")
+
+        user.first_name = full_name
+        user.email = email
+        user.save()
+
+        user_profile.phone = phone
+        user_profile.address = primary_address
+
+        if delivery_address_id:
+            try:
+                delivery_address = DeliveryAddress.objects.get(id=delivery_address_id)
+                user_profile.delivery_address = delivery_address
+            except DeliveryAddress.DoesNotExist:
+                pass
+        if request.FILES.get("profile_image"):
+            user_profile.profile_image = request.FILES["profile_image"]
+
+        user_profile.save()
+
+        messages.success(request, "Profile updated successfully.")
+        return redirect("profile", pk=user.id)
+
+    delivery_addresses = DeliveryAddress.objects.all()
+    wishlist = Wishlist.objects.filter(user=user)
+    cart, _ = Cart.objects.get_or_create(user=user)
+    cart_items = CartItem.objects.filter(cart=cart)
+    order_items = OrderItem.objects.filter(order__user=user)
+    order_item_count = order_items.count()
+
+    # Change password
+    if request.method == "POST" and "change_password" in request.POST:
+        current_password = request.POST.get("currentPassword")
+        new_password = request.POST.get("newPassword")
+        confirm_new_password = request.POST.get("confirmPassword")
+
+        if not check_password(current_password, user.password):
+            messages.error(request, "Current password is incorrect.")
+        elif new_password == current_password:
+            messages.error(
+                request, "New password cannot be the same as the current password."
+            )
+        elif len(new_password) < 8:
+            messages.error(request, "Password must be at least 8 characters long.")
+        elif new_password != confirm_new_password:
+            messages.error(request, "New passwords do not match.")
+        else:
+            user.password = make_password(new_password)
+            user.save()
+            logout(request)  # Terminates the session
+            messages.success(
+                request, "Password changed successfully. Please log in again."
+            )
+            return redirect("login")
+
+    context = {
+        "user": user,
+        "user_profile": user_profile,
+        "delivery_address": user_profile.delivery_address,
+        "wishlist": wishlist,
+        "cart_items": cart_items,
+        "delivery_addresses": delivery_addresses,
+        "order_item_count": order_item_count,
+    }
+
+    return render(request, "account/edit_profile.html", context)
+
