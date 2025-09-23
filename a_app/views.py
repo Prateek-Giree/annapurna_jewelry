@@ -26,6 +26,7 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db import transaction
+from django.db.models import Count
 
 # Create your views here.
 
@@ -104,6 +105,45 @@ def register(request):
 def logout(request):
     auth_logout(request)
     return redirect("index")
+
+def product(request, pk):
+    product_qs = Product.objects.filter(id=pk)
+    try:
+        product = product_qs[0]
+    except IndexError:
+        return render(request, "a_app/404.html")
+
+    categories = Category.objects.annotate(product_count=Count("products"))
+    related_products = Product.objects.filter(category=product.category).exclude(id=pk)[
+        :12
+    ]
+
+    context = {
+        "product": product,
+        "categories": categories,
+        "related_products": related_products,
+    }
+    return render(request, "a_app/products.html", context)
+
+
+def category_filter(request):
+    selected_category_id = request.GET.get("category")
+    categories = Category.objects.order_by('name')
+
+    if selected_category_id:
+        products = Product.objects.filter(category__id=selected_category_id)
+        current_category = Category.objects.filter(id=selected_category_id).first()
+    else:
+        products = Product.objects.all()
+        current_category = None
+
+    context = {
+        'categories': categories,
+        'products': products,
+        'current_category': current_category
+    }
+    return render(request, "a_app/categories.html", context)
+
 
 
 @login_required(login_url="login")

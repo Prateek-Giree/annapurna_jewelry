@@ -1,0 +1,215 @@
+{% extends "base.html" %} {% block title %} Products {% endblock title %} 
+{% block body %} {% load static %}
+
+<main
+  class="flex flex-col lg:flex-row justify-center gap-6 px-4 md:px-8 lg:px-20 py-6"
+>
+  <!-- Left: Product Details -->
+  <section class="flex-1">
+    <div
+      class="flex flex-col lg:flex-row gap-6 bg-white rounded-xl p-6 shadow-md border border-gray-200"
+    >
+      <!-- Product Image -->
+      <div class="flex-shrink-0">
+        <img
+          src="{{ product.image.url }}"
+          alt="{{ product.name }}"
+          class="w-full lg:w-[400px] lg:h-[400px] object-cover rounded-xl"
+        />
+      </div>
+
+      <!-- Product Info -->
+      <div class="flex flex-col gap-4 flex-1">
+        {% if product.discount_percentage != 0 %}
+        <span
+          class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded w-fit"
+        >
+          -{{ product.discount_percentage|floatformat:0 }}%
+        </span>
+        {% endif %}
+
+        <h3 class="text-2xl font-semibold">{{ product.name }}</h3>
+
+        <!-- Price -->
+        <div class="flex items-center gap-4">
+          <span class="text-green-600 text-2xl font-bold">
+            Rs {{ product.after_discount }}
+          </span>
+          <div class="flex flex-col">
+            {% if product.discount_percentage != 0 %}
+            <span class="text-orange-500 font-medium">
+              -{{ product.discount_percentage|floatformat:0 }}% off
+            </span>
+            {% endif %} {% if product.new_price %}
+            <span class="line-through text-gray-500"
+              >Rs {{ product.price }}</span
+            >
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Add to Cart -->
+        <!-- Add to Cart: Main Product -->
+        <div class="inline-block">
+          <button
+            onclick="addToCart({{ product.id }}, event)"
+            data-login-url="{% url 'login' %}"
+            class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium text-white bg-black transition-all duration-200 hover:bg-gray-800 hover:-translate-y-[1px]"
+          >
+            <svg
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              class="w-4 h-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l5.5 11"
+              />
+            </svg>
+            Add to Cart
+          </button>
+        </div>
+
+        <!-- Product Info -->
+        <div class="mt-4 space-y-2 text-gray-700">
+          <p>
+            <strong>Category:</strong>
+            <span class="text-green-700">{{ product.category.name }}</span>
+          </p>
+          <p>
+            <strong>Tags:</strong>
+            <span class="text-green-700">{{ product.tag }}</span>
+          </p>
+          <p>
+            <strong>Stock:</strong>
+            {% if product.stock != 0 %}
+            <span class="text-green-700"
+              >{{ product.stock }} items in stock</span
+            >
+            {% else %}
+            <span class="text-red-600">Out of stock</span>
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="mt-8">
+      <h3 class="text-xl font-bold font-rajdhani mb-2">Description</h3>
+      <p class="text-gray-600 leading-relaxed">{{ product.discription }}</p>
+    </div>
+
+    <div class="px-5 py-10">
+      <div
+        class="grid justify-center grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6 mt-5"
+      >
+        {% for related_product in related_products %}
+    <a href="{% url "product" related_product.id %}">
+
+        <div
+          class="group w-[280px] bg-white border border-[#f0f0f0] rounded-lg overflow-hidden transition-all duration-300 relative hover:border-[#e0e0e0] hover:-translate-y-[2px] hover:shadow-[0_4px_20px_rgba(0,0,0,0.5)] shadow-md"
+        >
+          <!-- Wishlist Button -->
+          <button
+            onclick="toggleWishlist(this, {{ related_product.id }})"
+            class="absolute z-10 top-[15px] right-[15px] w-10 h-10 rounded-full bg-white/90 flex items-center justify-center opacity-0 transition-all duration-200 hover:bg-white hover:scale-110 group-hover:opacity-100 group-[.active]:bg-red-500 group-[.active]:text-white"
+          >
+            <svg
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              class="w-[18px] h-[18px]"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              />
+            </svg>
+          </button>
+
+          {% if related_product.discount_price %}
+          <small
+            class="absolute z-10 bg-[rgb(252,43,78)] text-white font-bold font-sans p-[5px] border-l-[5px] border-[rgb(252,43,78)] rounded"
+          >
+            -{{ related_product.discount_percentage }}%
+          </small>
+          {% endif %}
+
+          <img
+            src="{{ related_product.image.url }}"
+            alt="{{ related_product.name }}"
+            class="w-full h-[250px] object-cover transition-transform duration-300 hover:scale-105"
+          />
+
+          <div class="p-5">
+            <div
+              class="text-[12px] uppercase tracking-wider text-gray-500 font-medium mb-2"
+            >
+              {{ related_product.category.name }}
+            </div>
+
+            <div class="text-[18px] font-semibold mb-3 text-gray-800">
+              {{ related_product.name }}
+            </div>
+
+            <div class="flex items-center gap-3 mb-5">
+              {% if related_product.discount_price %}
+              <span class="text-gray-400 line-through text-[16px]"
+                >Rs.{{ related_product.price }}</span
+              >
+              <span class="text-[20px] font-bold text-black">
+                Rs.{{ related_product.after_discount }}
+              </span>
+              {% else %}
+              <span class="text-[20px] font-bold text-black"
+                >Rs.{{ related_product.price }}</span
+              >
+              {% endif %}
+            </div>
+
+            <!-- Add to Cart -->
+            <div class="flex gap-3">
+              <button
+                onclick="addToCart({{ product.id }}, event)"
+                data-login-url="{% url 'login' %}"
+                class="flex items-center justify-center gap-2 px-4 py-3 rounded-md text-sm font-medium text-white bg-black transition-all duration-200 hover:bg-gray-800 hover:-translate-y-[1px]"
+              >
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  class="w-[16px] h-[16px]"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l5.5 11"
+                  />
+                </svg>
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="w-full lg:w-1/4 flex flex-col gap-6">
+    {% include "a_app/category_activity.html" %}
+  </section>
+</main>
+<script>
+  const isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
+</script>
+
+{% endblock body %}
