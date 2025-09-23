@@ -11,10 +11,6 @@ from .models import (
     OrderItem,
 )
 from django.core.exceptions import ObjectDoesNotExist
-import hmac
-import hashlib
-import base64
-import requests
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
@@ -27,6 +23,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db import transaction
 from django.db.models import Count
+from .searching_algo import linear_search_partial
 
 
 # Create your views here.
@@ -107,6 +104,7 @@ def logout(request):
     auth_logout(request)
     return redirect("index")
 
+
 def product(request, pk):
     product_qs = Product.objects.filter(id=pk)
     try:
@@ -129,7 +127,7 @@ def product(request, pk):
 
 def category_filter(request):
     selected_category_id = request.GET.get("category")
-    categories = Category.objects.order_by('name')
+    categories = Category.objects.order_by("name")
 
     if selected_category_id:
         products = Product.objects.filter(category__id=selected_category_id)
@@ -139,12 +137,11 @@ def category_filter(request):
         current_category = None
 
     context = {
-        'categories': categories,
-        'products': products,
-        'current_category': current_category
+        "categories": categories,
+        "products": products,
+        "current_category": current_category,
     }
     return render(request, "a_app/categories.html", context)
-
 
 
 @login_required(login_url="login")
@@ -419,14 +416,14 @@ def checkout_view(request):
         },
     )
 
+
 @login_required(login_url="login")
 def profile(request, pk):
     if request.user.id != pk:
-         messages.error(request, "Unsupported action")
-
+        messages.error(request, "Unsupported action")
 
     # Get the user profile
-    user = request.user  
+    user = request.user
     user_profile = get_object_or_404(UserProfile, user=user)
     delivery_address = user_profile.delivery_address
 
@@ -530,3 +527,23 @@ def edit_profile(request):
 
     return render(request, "account/edit_profile.html", context)
 
+
+def product_search(request):
+    query = request.GET.get("q", "").strip()
+    product_list = Product.objects.all()
+    product_list = list(product_list)  # convert queryset to list
+
+    results = linear_search_partial(product_list, query) if query else []
+
+    context = {
+        "query": query,
+        "results": results,
+    }
+
+    if query:
+        if results:
+            messages.success(request, f"{len(results)} result(s) found for '{query}'")
+        else:
+            messages.warning(request, f"No product found for '{query}'")
+
+    return render(request, "a_app/search.html", context)
