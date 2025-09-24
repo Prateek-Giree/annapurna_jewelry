@@ -278,8 +278,8 @@
     </div>
   </div>
 </section>
-<script>
-  const isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
-</script>
+    <script>
+        const isAuthenticated = {% if user.is_authenticated %}true{% else %} false{% endif %};
+    </script>
 
 {% endblock body %}
