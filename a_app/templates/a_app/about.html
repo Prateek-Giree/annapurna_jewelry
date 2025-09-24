@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="flex min-h-screen flex-col" <main class="flex-grow">
+  <section class="relative flex h-[60vh] min-h-[400px] items-center justify-center bg-cover bg-center text-white"
+    style='background-image: linear-gradient(rgba(33, 17, 25, 0.4), rgba(33, 17, 25, 0.7)), url("https://lh3.googleusercontent.com/aida-public/AB6AXuDMf4syLNFnMVevbLyAfib48RbInYAWUb9-PjJktUs_HD0PXh5Ngqblm0VwFY7zjG9NGKdz15yX2_0JdhkFLNJwtoyckYCJEJ5NU1KRsVAISUmv-v8BqOLKZkwX8ZGT8rtVGOAZt_ahn4mnbnEvSiheOCVbKMA0uQc-Pm4j60itxguxuaM0klOVaL6ZFzy-YQLKEoYZR3gwtmI_OsIQAKeihoGrrwchAvpo12NKz70ORCthHW90bT5Y9ZbB7R4Dgl4E_UjpSrP1U4GC");'>
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-5xl font-bold leading-tight tracking-tight text-white md:text-7xl">Our Story</h2>
+      <p class="mx-auto mt-4 max-w-3xl text-lg">
+        Annapurna Jewelry is more than just a brand; it's a journey of passion, craftsmanship, and timeless elegance.
+        Founded in the heart of the Himalayas, our pieces are
+        inspired by the majestic beauty and rich cultural heritage of the region.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-24">
+    <div class="container mx-auto px-6">
+      <div class="mx-auto max-w-4xl text-center">
+        <p class="text-lg leading-relaxed text-gray-700">
+          Each creation is meticulously handcrafted by skilled artisans, using ethically sourced materials and
+          traditional techniques passed down through generations. Our
+          commitment to quality and sustainability ensures that every piece not only embodies exquisite beauty but also
+          carries a story of integrity and respect for nature.
+        </p>
+      </div>
+      <div class="mt-16 grid gap-12 md:grid-cols-2 md:gap-16">
+        <div class="space-y-4">
+          <h3 class="text-3xl font-bold text-gray-900">Our Vision</h3>
+          <p class="text-lg leading-relaxed text-gray-700 text-justify">
+            To be a beacon of sustainable luxury, crafting timeless pieces that celebrate the beauty of nature and
+            empower artisans in the Himalayas. We envision a world
+            where elegance and ethics coexist, where every piece of jewelry tells a story of heritage, craftsmanship,
+            and environmental responsibility.
+          </p>
+        </div>
+        <div class="space-y-4">
+          <h3 class="text-3xl font-bold text-gray-900">Our Mission</h3>
+          <p class="text-lg leading-relaxed text-gray-700 text-justify">
+            To create exquisite, handcrafted jewelry that reflects the natural beauty and cultural richness of the
+            Himalayas. We are dedicated to using sustainable practices,
+            supporting local communities, and preserving traditional craftsmanship. Our mission is to offer our
+            customers not just jewelry, but a piece of art that embodies
+            our values of quality, sustainability, and social impact.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-background-light py-16 sm:py-24">
+    <div class="container mx-auto px-6">
+      <h2 class="mb-12 text-center text-4xl font-bold text-gray-900">Gallery</h2>
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        <div class="aspect-square w-full rounded-xl bg-cover bg-center"
+          style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA23p3Wm7cbx3YoiuAFhs-1kYvwCIQbh8cN74aSpfNMVBnz7FyN9pQ6VV3D9P6rUBf0L-1iBecYuWbylV-yN_gdXZPdZHix59srfC1-fQ6hKFAalPlaAcoZKYOB9fLU2j2uo6C5i3ZM0saiKefAPeBoVQhTY6oJrpIAcY4vJNFfzM4teI4hVCXA7GZ4AnjNL4ZEl7t3Y0rB-IoiNav07FyfEdVbzgof7enWP_UW9TeDjvwYkmZBcM3b91bZauDnrRaLYvZJOe5GaCUT");'>
+        </div>
+        <div class="aspect-square w-full rounded-xl bg-cover bg-center"
+          style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAFpjqxrhOznHnGc-lKXsqS8u7acZCUm1znHfPNaboEt3ZOu0uop1P9OnE8rwQtfTX5zuvcfFRDlw_y-RyUKHeYWBPUZQ8_HO3BPCLkuYFU-abLio6Id1FRF26CBRkIJRCuGl1RzgtFMFRl7XO_CdnVien63UmNd9bGf_rcADz8wdjTjzW441CJKOiCcjWruq5UhvxNoBzOWvj4Dc26ixPDpPtJvZfJLCe5etCdftHpZUg0MO2v6mpp7bXxrq3leZGF88pJIqeb-nai");'>
+        </div>
+        <div class="aspect-square w-full rounded-xl bg-cover bg-center"
+          style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDMhZVTh5JYe4J_hbpwB7cg1DR9C96IMBoTIaTo34lzHXmewKDvKJmn5x1VObe0d2_FROzGyxLGtuejwx5LBvlm_J-JpCw7np7COKSOXZMGqRNrnaVqpnPe2XqkTsqaPpZsEww7MpKpYQtDLywtipIvgD9ivjm0eTfipI6tbbts0p0xGZXfHA13zBWQ_nuoLm-x7IjULvbfgBHQzARzkQ9bXus8e4MeOBzoqpIa7MnqowS3oQ1-UozPDlMdEJMHRwfCK7t6W6Ag9YXf");'>
+        </div>
+        <div class="aspect-square w-full rounded-xl bg-cover bg-center"
+          style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCg0AKUOHdC_ScE0TyIVq19kvCszu7rX6GHCDqO4rTq5Wm2ZztxJ22GkN57IaEZpY19ZqmFbe8A_WU-j1pEJf6Cr8PFknH68lrVh02w_dnfPwn0HhCXa5MXrDPGRErJt20P2Nv-taLor903KMF1bJLAyX2wqHJKzrE7J0f_gHW0Qr4NwnreyxOx5M1MDMdktHZumR-M4L31rF7aUZOjME6uO6AQuCdLj7gvTD6n8RdYiqrBhD3qpkcYiQ3qH83Fy4nmijB71dTK7Fhg");'>
+        </div>
+        <div class="aspect-square w-full rounded-xl bg-cover bg-center"
+          style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCxZrHELaDrxb00DJn1nrgFBDDb7gb8q5iV4HfC3VHIaiHJT3SV5llb1XvvRwWhrUz_gzJZRUsc1r2YWe1ba34_D1MAwO6jO2VvFVM2JZkI_b4E6PmCXcxF3ZUgzmiNtVJKE079afQuJzXDgrR7F1WtQHCO_4l9H5lh68zt0sncyy1Wg7DbyPvbTFk1Jq4eXNaIF4gzIQ3nnpLf_BGB7yV033A85kcmBaXGydzZuDKzEN4PkecYK9T_TmtB16sq2DUcCx70Yv8Lgjz-");'>
+        </div>
+        <div class="aspect-square w-full rounded-xl bg-cover bg-center"
+          style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA-ZE72DHBwY67ihESpgr5f3nLnshCnx6qkDemc-jmVEfJOoHgaz06BFjVWLOwzDfPZsRDQeeQ3yil5SMtw4zYKA8sofQymIXlWe8l23DKHLr82wSEJgoEtQU1DWbS0na_bVP10iMnWBZJ3ZV207ptZoN_cPeCvZSJqeY_dNDLzhKKYDXeHWllOIC7JifeSp1yzTxvVFQsXrOcRuxedimifQ9OOPtGsmoBFFEdU6dnEv7fRaSsoBS9wWK01CIMeUgfSnTOoeql9glGY");'>
+        </div>
+      </div>
+    </div>
+</div>
+</section>
+</main>
+</div>
+{% endblock body %}

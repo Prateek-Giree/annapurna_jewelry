@@ -37,6 +37,9 @@ def index(request):
     context = {"categories": categories, "products": products}
     return render(request, "a_app/index.html", context)
 
+def about(request):
+    return render(request, "a_app/about.html")
+
 
 def login(request):
     page = "login"
