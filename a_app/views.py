@@ -24,6 +24,8 @@ import json
 from django.db import transaction
 from django.db.models import Count
 from .searching_algo import linear_search_partial
+from .quick_sort import quicksort_products
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 # Create your views here.
@@ -547,3 +549,47 @@ def product_search(request):
             messages.warning(request, f"No product found for '{query}'")
 
     return render(request, "a_app/search.html", context)
+
+
+def collection(request):
+    products = list(Product.objects.all())
+    categories = Category.objects.all()
+
+    category = request.GET.get('filterBy')
+    sort_by = request.GET.get('sortBy')
+
+    if category:
+        products = [p for p in products if p.category.name.lower() == category.lower()]
+
+    if sort_by == 'name':
+        products = quicksort_products(products, key_func=lambda p: p.name.lower())
+    elif sort_by == 'category':
+        products = quicksort_products(products, key_func=lambda p: p.category.name.lower())
+    elif sort_by == 'price-asc':
+        products = quicksort_products(products, key_func=lambda p: p.after_discount)
+    elif sort_by == 'price-desc':
+        products = quicksort_products(products, key_func=lambda p:  p.after_discount, reverse=True)
+    elif sort_by == 'id':
+        products = quicksort_products(products, key_func=lambda p: p.id)
+
+    # Pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(products, 10)  # Show 10 products per page
+
+    try:
+        paginated_products = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        paginated_products = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver last page of results.
+        paginated_products = paginator.page(paginator.num_pages)
+
+    context = {
+        'products': paginated_products,
+        'results_count': len(products),
+        'categories': categories,
+        'paginator': paginator,
+        'page_obj': paginated_products,
+    }
+    return render(request, 'a_app/filter.html', context)
