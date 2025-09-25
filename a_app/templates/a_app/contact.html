@@ -1,0 +1,192 @@
+{% extends "base.html" %} {% block body %}
+<div class="flex flex-col min-h-screen">
+  <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
+      <div class="space-y-8">
+        <div class="space-y-4">
+          <h2 class="text-4xl md:text-5xl font-bold tracking-tight">
+            Get in Touch
+          </h2>
+          <p class="text-black/60 text-lg">
+            We're here to help! Whether you have a question about our jewelry,
+            need assistance with an order, or just want to share your thoughts,
+            we'd love to hear from you.
+          </p>
+        </div>
+        <form method="POST" action="{% url "contact" %}" class="space-y-6">
+          {% csrf_token %}
+
+          <div>
+            <label class="block text-sm font-medium mb-2" for="name"
+              >Your Name</label
+            >
+            <input
+              class="form-input w-full rounded border-primary/30 focus:ring-primary focus:border-primary transition-colors text-black"
+              id="name"
+              name="name"
+              placeholder="Enter your name"
+              type="text"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2" for="email"
+              >Your Email</label
+            >
+            <input
+              class="form-input w-full rounded border-primary/30 focus:ring-primary focus:border-primary transition-colors text-black"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              type="email"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2" for="subject"
+              >Subject</label
+            >
+            <input
+              class="form-input w-full rounded border-primary/30 focus:ring-primary focus:border-primary transition-colors text-black"
+              id="subject"
+              name="subject"
+              placeholder="Enter the subject"
+              type="text"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2" for="message"
+              >Your Message</label
+            >
+            <textarea
+              class="form-input w-full rounded border-primary/30 focus:ring-primary focus:border-primary transition-colors text-black"
+              id="message"
+              name="message"
+              placeholder="Enter your message"
+              rows="5"
+              required
+            ></textarea>
+          </div>
+
+          <div>
+            <button
+              class="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-bold rounded hover:bg-blue-700 transition-all text-sm"
+              type="submit"
+            >
+              Send Message
+            </button>
+          </div>
+        </form>
+
+        <!-- Feedback messages -->
+        {% if messages %}
+        <div class="mt-4">
+          {% for message in messages %}
+          <p
+            class="{% if message.tags == 'success' %}text-green-600{% else %}text-red-600{% endif %}"
+          >
+            {{ message }}
+          </p>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="space-y-12">
+        <div class="w-full h-[500px] md:h-[600px] rounded-xl overflow-hidden">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3282.821360977777!2d85.30966261393797!3d27.70755243654036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb18ffcc17e263%3A0xc71d89c4e52ef4a0!2zQW5uYXB1cm5hIEpld2VsbGVyeSBQdnQuIEx0ZCAo4KSF4KSo4KWN4KSo4KSq4KWC4KSw4KWN4KSjIOCknOCljeCkteClh-CksuCksOClgCDgpKrgpY3gpLDgpL4uIOCksuCkvy4p!5e0!3m2!1sen!2snp!4v1758679323682!5m2!1sen!2snp"
+            class="w-full h-full"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          >
+          </iframe>
+        </div>
+
+        <div class="space-y-6">
+          <div class="flex items-start space-x-4">
+            <svg
+              class="text-primary mt-1"
+              fill="currentColor"
+              height="24"
+              viewBox="0 0 256 256"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M224,144v64a8,8,0,0,1-8,8H152a8,8,0,0,1,0-16h56V152a8,8,0,0,1,16,0ZM40,152v56H96a8,8,0,0,1,0,16H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0ZM152,32h56a8,8,0,0,1,8,8V96a8,8,0,0,1-16,0V48H152a8,8,0,0,1,0-16ZM96,32a8,8,0,0,1,0,16H40V96a8,8,0,0,1-16,0V40a8,8,0,0,1,8-8Z"
+              ></path>
+            </svg>
+            <div>
+              <h3 class="font-bold text-lg">Address</h3>
+              <p class="text-black/60">Thamel, Kathmandu, Nepal</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4">
+            <svg
+              class="text-primary mt-1"
+              fill="currentColor"
+              height="24"
+              viewBox="0 0 256 256"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M222.36,158.46l-42.66-42.67a16,16,0,0,0-22.63,0l-12,12a8,8,0,0,1-9.9-1.42l-43.2-54a8,8,0,0,1-1.42-9.9l12-12a16,16,0,0,0,0-22.63L59.54,33.64a16,16,0,0,0-22.63,0l-12,12A16,16,0,0,0,24,57.17C24.3,136.58,87.42,200,166.83,200a16,16,0,0,0,11.53-4.94l12-12A16,16,0,0,0,222.36,158.46ZM168.25,184c-68.49-.33-124-56-124.28-124.42l10.34-10.34L77,71.9l-12,12a16,16,0,0,0-2.83,19.79l43.2,54a16,16,0,0,0,19.79-2.83l12-12,22.66,22.66Z"
+              ></path>
+            </svg>
+            <div>
+              <h3 class="font-bold text-lg">Phone</h3>
+              <p class="text-black/60">+977-9841234567</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4">
+            <svg
+              class="text-primary mt-1"
+              fill="currentColor"
+              height="24"
+              viewBox="0 0 256 256"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M224,48H32a8,8,0,0,0-8,8V192a8,8,0,0,0,8,8H224a8,8,0,0,0,8-8V56A8,8,0,0,0,224,48Zm-8,144H40V64H216Zm-95.51-60.49a8,8,0,0,1,11,0l56,48a8,8,0,1,1-11,11l-50.49-43.28L68.49,152a8,8,0,0,1-11-11Z"
+              ></path>
+            </svg>
+            <div>
+              <h3 class="font-bold text-lg">Email</h3>
+              <p class="text-black/60">info@annapurnajewelry.com</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4">
+            <svg
+              class="text-primary mt-1"
+              fill="currentColor"
+              height="24"
+              viewBox="0 0 256 256"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm48-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h32A8,8,0,0,1,176,128Z"
+              ></path>
+            </svg>
+            <div>
+              <h3 class="font-bold text-lg">Business Hours</h3>
+              <p class="text-black/60">Monday - Friday: 9 AM - 6 PM</p>
+              <p class="text-black/60">Saturday: 10 AM - 4 PM</p>
+              <p class="text-black/60">Sunday: Closed</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock body %}

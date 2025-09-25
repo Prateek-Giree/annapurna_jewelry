@@ -36,7 +36,7 @@
                         class="relative text-gray-600 hover:text-gray-900 transition-colors after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-gray-900 after:transition-all after:duration-300 hover:after:w-full">
                         <i class="fa-solid fa-circle-info"></i> About
                     </a>
-                    <a href="#"
+                    <a href="{% url "contact" %}"
                         class="relative text-gray-600 hover:text-gray-900 transition-colors after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-gray-900 after:transition-all after:duration-300 hover:after:w-full">
                         <i class="fa-solid fa-address-book"></i> Contact
                     </a>
@@ -98,8 +98,8 @@
             <div class="px-6 py-4 space-y-4">
                 <a href="{% url 'index' %}" class="block nav-link"><i class="fa-solid fa-house"></i> Home</a>
                 <a href="{% url 'category_filter' %}" class="block nav-link"><i class="fa-solid fa-shop"></i> Shop</a>
-                <a href="#" class="block nav-link"><i class="fa-solid fa-circle-info"></i> About</a>
-                <a href="" class="block nav-link"><i class="fa-solid fa-address-book"></i> Contact</a>
+                <a href="{% url "about" %}" class="block nav-link"><i class="fa-solid fa-circle-info"></i> About</a>
+                <a href="{% url "contact" %}" class="block nav-link"><i class="fa-solid fa-address-book"></i> Contact</a>
                 <a href="{% url "collection" %}" class="block nav-link"><i class="fa-solid fa-address-book"></i> <i class="fa-solid fa-list"></i> Collections</a>
                 
                 <div class="relative">

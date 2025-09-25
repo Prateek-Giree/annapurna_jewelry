@@ -26,6 +26,7 @@ from django.db.models import Count
 from .searching_algo import linear_search_partial
 from .quick_sort import quicksort_products
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.mail import send_mail
 
 
 # Create your views here.
@@ -40,6 +41,35 @@ def index(request):
 def about(request):
     return render(request, "a_app/about.html")
 
+from django.core.mail import send_mail
+from django.contrib import messages
+from django.shortcuts import render, redirect
+
+def contact(request):
+    if request.method == "POST":
+        name = request.POST.get("name", "").strip()
+        email = request.POST.get("email", "").strip()
+        subject = request.POST.get("subject", "").strip()
+        message = request.POST.get("message", "").strip()
+
+        if all([name, email, subject, message]):
+            try:
+                send_mail(
+                    subject=f"[Contact:] {subject}",
+                    message=f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}",
+                    from_email=email,
+                    recipient_list=["fastcart.onlineshop@gmail.com"],
+                    fail_silently=False,
+                )
+                messages.success(request, "Message sent successfully!")
+            except Exception as e:
+                messages.error(request, f"Error sending message: {e}")
+            
+            return redirect("contact")
+        else:
+            messages.error(request, "Please fill in all fields.")
+
+    return render(request, "a_app/contact.html")
 
 def login(request):
     page = "login"
