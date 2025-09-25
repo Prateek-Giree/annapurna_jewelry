@@ -626,3 +626,12 @@ def collection(request):
         'page_obj': paginated_products,
     }
     return render(request, 'a_app/filter.html', context)
+
+def browse_category(request,pk):
+    category = get_object_or_404(Category, id=pk)
+    products=category.products.all()
+    context={
+        'category':category,
+        'products':products
+    }
+    return render(request,"a_app/category_detail.html",context)
