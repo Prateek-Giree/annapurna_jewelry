@@ -1,25 +1,28 @@
 #!/bin/bash
 
-# Exit on error
+# Exit immediately if a command fails
 set -e
+set -o pipefail
 
-echo "Installing Python dependencies..."
+echo "=== Installing Python dependencies ==="
 pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 
-echo "Running migrations..."
+echo "=== Running migrations ==="
 python manage.py makemigrations
 python manage.py migrate
 
-echo "Creating superuser if not exists..."
-python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); \
-username='$DJANGO_SUPERUSER_USERNAME'; email='$DJANGO_SUPERUSER_EMAIL'; password='$DJANGO_SUPERUSER_PASSWORD'; \
-User.objects.filter(username=username).exists() or User.objects.create_superuser(username=username, email=email, password=password)"
-
-echo "Collecting static files..."
+echo "=== Collecting static files ==="
 python manage.py collectstatic --noinput
+echo "Static files collected successfully."
 
-echo "Uploading existing media to Cloudinary..."
-python manage.py upload_to_cloudinary  # only if you have that command set up
+# Optional: Upload existing media to Cloudinary
+if python manage.py help | grep -q upload_to_cloudinary; then
+    echo "=== Uploading existing media to Cloudinary ==="
+    python manage.py upload_to_cloudinary
+    echo "Media uploaded to Cloudinary successfully."
+else
+    echo "No upload_to_cloudinary command found, skipping."
+fi
 
-echo "Setup complete!"
+echo "=== Setup complete! ==="
