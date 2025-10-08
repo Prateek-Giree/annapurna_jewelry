@@ -183,3 +183,6 @@ JAZZMIN_SETTINGS = {
     "copyright": "My Company",
 }
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://annapurnajewelry-production.up.railway.app',
+]
