@@ -1,12 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
+from cloudinary.models import CloudinaryField
 
 
 # Category Table
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to="category_images/", blank=True, null=True)
+    image = CloudinaryField('image', blank=True, null=True)    
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -25,7 +26,7 @@ class DeliveryAddress(models.Model):
 # UserProfile Table
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_image = models.ImageField(upload_to="profiles/", blank=True, null=True)
+    profile_image = CloudinaryField('image', blank=True, null=True)    
     phone = models.CharField(max_length=15, blank=True)
     address = models.TextField(blank=True)
     delivery_address = models.ForeignKey(DeliveryAddress, on_delete=models.SET_NULL, null=True)
@@ -40,7 +41,7 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discount_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    image = models.ImageField(upload_to="product_images/")
+    image = CloudinaryField('image')  
     stock = models.PositiveIntegerField(default=0)
     material = models.CharField(max_length=100, choices=[
         ("gold", "Gold"),
