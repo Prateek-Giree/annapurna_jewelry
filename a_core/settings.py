@@ -27,8 +27,8 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = False
 # DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['annapurnajewelry-production.up.railway.app','.vercel.app','localhost', '127.0.0.1']
-# ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['annapurnajewelry-production.up.railway.app','.vercel.app','localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
