@@ -145,6 +145,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+FILE_UPLOAD_HANDLERS = [
+    "cloudinary_storage.upload_handlers.CloudinaryFileUploadHandler",
+]
+
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
@@ -185,4 +189,6 @@ JAZZMIN_SETTINGS = {
 
 CSRF_TRUSTED_ORIGINS = [
     'https://annapurnajewelry-production.up.railway.app',
+    'https://*.vercel.app',
+    'https://localhost',
 ]
